@@ -19,14 +19,14 @@ import static frc.robot.configs.constants.VisionConstants.FRONT_CAMERA_NAME;
 public class Vision extends SubsystemBase {
     private static Vision instance;
 
-    private HttpCamera cameraFeed;
+    private static HttpCamera cameraFeed;
     private AprilTagFieldLayout fieldLayout;
     private NetworkTable cameraTable;
     private NetworkTable llTable;
 
 
     public Vision() {
-        fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+        fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
         cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);      
         llTable = NetworkTableInstance.getDefault().getTable("limelight");
     }
