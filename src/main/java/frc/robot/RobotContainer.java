@@ -19,10 +19,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.autons.apriltag.AlignToTag;
-import frc.robot.commands.autons.apriltag.BetterAlignToTag;
-import frc.robot.commands.autons.apriltag.GoToAprilTag;
-import frc.robot.commands.autons.apriltag.HuntTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
 import frc.robot.commands.autons.timed.Taxi;
@@ -94,10 +90,6 @@ public class RobotContainer {
             joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
             joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
             
-            visionController.a().onTrue(new AlignToTag(drivetrain, vision, 7));
-            visionController.b().onTrue(new BetterAlignToTag());
-            visionController.x().onTrue(new GoToAprilTag(drivetrain, vision, 7));
-            visionController.y().onTrue(new HuntTag(drivetrain, vision));
             // Reset the field-centric heading on left bumper press.
             joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
     

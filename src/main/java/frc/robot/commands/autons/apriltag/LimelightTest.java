@@ -10,7 +10,6 @@ public class LimelightTest extends SequentialCommandGroup {
     public LimelightTest(CommandSwerveDrivetrain drivetrain, Vision vision, int tagID) {
         addCommands(
             new SequentialCommandGroup(
-                new WaitCommand(0.2),
-                new GoToAprilTag(drivetrain, vision, vision.getTagId()).withTimeout(5.0)));
+                new WaitCommand(0.2)));
     }
 }
