@@ -1,8 +1,8 @@
 package frc.robot.commands.autons;
 
-import frc.robot.commands.autons.apriltag.AlignToTag;
-import frc.robot.commands.autons.apriltag.GoToAprilTag;
-import frc.robot.commands.autons.apriltag.HuntTag;
+// import frc.robot.commands.autons.apriltag.AlignToTag;
+// import frc.robot.commands.autons.apriltag.GoToAprilTag;
+// import frc.robot.commands.autons.apriltag.HuntTag;
 import frc.robot.configs.constants.PhysicalConstants;
 import frc.robot.RobotContainer;
 
@@ -16,9 +16,8 @@ public class BasicCommands {
     public static Vision vision;
 
     public static void setCommands() {
-        NamedCommands.registerCommand("GoLimelight",
-                new GoToAprilTag(drivetrain, vision, vision.getTagId()).withTimeout(5.0));
-        NamedCommands.registerCommand("AlignToTag", new AlignToTag(drivetrain, vision, 0));
+        // NamedCommands.registerCommand("GoLimelight",new GoToAprilTag(drivetrain, vision, vision.getTagId()).withTimeout(5.0));
+        // NamedCommands.registerCommand("AlignToTag", new AlignToTag(drivetrain, vision, 0));
 
     }
 }
