@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.autons.apriltag.Angle2AprilTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
 import frc.robot.commands.autons.timed.Taxi;
@@ -94,6 +95,8 @@ public class RobotContainer {
             joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
     
             drivetrain.registerTelemetry(logger::telemeterize);
+            
+            visionController.a().whileTrue(new Angle2AprilTag(0));
         }
     
         public Command getAutonomousCommand() {
