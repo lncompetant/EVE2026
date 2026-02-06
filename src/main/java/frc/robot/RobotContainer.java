@@ -96,7 +96,7 @@ public class RobotContainer {
     
             drivetrain.registerTelemetry(logger::telemeterize);
             
-            visionController.a().whileTrue(new Angle2AprilTag(0));
+            joystick.x().whileTrue(new Angle2AprilTag(0));
         }
     
         public Command getAutonomousCommand() {

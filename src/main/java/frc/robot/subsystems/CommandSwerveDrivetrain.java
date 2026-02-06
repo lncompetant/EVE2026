@@ -453,19 +453,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public double calculateChangeRotateController(double wantedAngle) {
-        double currentYaw = getPose().getRotation().getRadians();
-        if (Double.isNaN(wantedAngle)) {
-            return 0.0;
-        }
-        // Ensure controller handles wrap-around properly
-        aprilTagOmegaController.enableContinuousInput(-Math.PI, Math.PI);
-        // Normalize desired angle to [-pi, pi]
-        double setpoint = Rotation2d.fromRadians(wantedAngle).getRadians();
-        // If already at setpoint, return zero
-        if (aprilTagOmegaController.atSetpoint()) {
-            return 0.0;
-        }
-        return aprilTagOmegaController.calculate(currentYaw, setpoint);
+        //need to be fixed to work 
+        return aprilTagOmegaController.calculate(getRotation2d().getDegrees(), wantedAngle);
     }
 
     public Rotation2d getRotation2d() {
