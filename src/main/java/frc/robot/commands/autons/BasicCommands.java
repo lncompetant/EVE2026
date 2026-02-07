@@ -18,6 +18,5 @@ public class BasicCommands {
     public static void setCommands() {
         // NamedCommands.registerCommand("GoLimelight",new GoToAprilTag(drivetrain, vision, vision.getTagId()).withTimeout(5.0));
         // NamedCommands.registerCommand("AlignToTag", new AlignToTag(drivetrain, vision, 0));
-
     }
 }

@@ -42,6 +42,8 @@ import frc.robot.configs.constants.TunerConstants.TunerSwerveDrivetrain;
 
 import static frc.robot.configs.constants.PhysicalConstants.CommandSwerveDrivetrain.*;
 
+import static frc.robot.configs.constants.TunerConstants.*;
+
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
  * Subsystem so it can easily be used in command-based projects.
@@ -60,13 +62,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	private PIDController aprilTagOmegaController;
 
 
-    private CommandSwerveDrivetrain drivetrain;
+    private final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
     /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
     private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean m_hasAppliedOperatorPerspective = false;
+
+    //local max speed theoretical needs to be tuend
+    private double MAX_SPEED = 11.71; //from tuner constants linearvelocity in Meters per second PUT THIS IN CONSTANTS LATER
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -373,6 +378,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
     public void configureAutoBuilder(){
+        Pose2d poseq = new Pose2d();// stupid test 
         AutoBuilder.configure(
             () -> drivetrain.getPose(), // Robot pose supplier
             (Pose2d pose) -> drivetrain.resetPose(pose), // Method to reset odometry (will be called if your auto has a starting pose)
@@ -386,7 +392,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 ROBOT_MASS,
                 ROBOT_MOMENT_OF_INERTIA,
                 new ModuleConfig(
-                    WHEEL_DIAMETER / 2,
+                    WHEEL_DIAMETER / 2, //0.0508 is magic number for now wheel diamter 
                     MAX_SPEED,
                     WHEEL_COEFFICIENT_OF_FRICTION,
                     // DCMotor.getKrakenX60(1).withReduction(5.472),
