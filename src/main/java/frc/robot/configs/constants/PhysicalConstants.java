@@ -5,10 +5,10 @@ public class PhysicalConstants {
     public final static class CommandSwerveDrivetrain {
         // The left-to-right distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(20.75);
+		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(22.75);
 		// The front-to-back distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(22.75);
+		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(20.75);
 
 		public static final double DRIVEBASE_RADIUS_METERS = Math.hypot(
 			DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0

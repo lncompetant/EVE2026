@@ -32,7 +32,7 @@ public class TunerConstants {
     private static final Slot0Configs driveGains = new Slot0Configs()
         .withKP(0.1).withKI(0).withKD(0)
         .withKS(0).withKV(0.124);
-
+        
     // The closed-loop output type to use for the steer motors;
     // This affects the PID/FF gains for the steer motors
     private static final ClosedLoopOutputType kSteerClosedLoopOutput = ClosedLoopOutputType.Voltage;
@@ -82,7 +82,7 @@ public class TunerConstants {
 
     private static final double kDriveGearRatio = 5.2734375;
     private static final double kSteerGearRatio = 26.09090909090909;
-    private static final Distance kWheelRadius = Inches.of(4);
+    private static final Distance kWheelRadius = Inches.of(2);
 
     private static final boolean kInvertLeftSide = false;
     private static final boolean kInvertRightSide = true;

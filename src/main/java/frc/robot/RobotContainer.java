@@ -142,7 +142,9 @@ public class RobotContainer {
         final var idle = new SwerveRequest.Idle();
         autoChooser = new SendableChooser<Command>();
         autoChooser.setDefaultOption("nothing", null);
-        autoChooser.addOption("PathPlanner Auto", new PathPlannerAuto("DriveAuto"));
+        autoChooser.addOption("Pathplanner Rotate", new PathPlannerAuto("RotationAuto"));
+        autoChooser.addOption("Pathplanner Vertical", new PathPlannerAuto("DriveAuto"));
+        autoChooser.addOption("Pathplanner ZigZag", new PathPlannerAuto("ZigZagAuto"));
         autoChooser.addOption("Timed Taxi", new Taxi());
         autoChooser.addOption("Limelight Test", new LimelightTest(drivetrain, vision, 0));
         autoChooser.addOption("Drive forward nopathplan",Commands.sequence(

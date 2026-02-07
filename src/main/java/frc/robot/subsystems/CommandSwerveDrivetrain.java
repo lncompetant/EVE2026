@@ -71,7 +71,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private boolean m_hasAppliedOperatorPerspective = false;
 
     //local max speed theoretical needs to be tuend
-    private double MAX_SPEED = 11.71; //from tuner constants linearvelocity in Meters per second PUT THIS IN CONSTANTS LATER
+    private double MAX_SPEED = 11.71/2; //from tuner constants linearvelocity in Meters per second PUT THIS IN CONSTANTS LATER
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -385,8 +385,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             () -> drivetrain.getRobotRelativeSpeeds(), // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (ChassisSpeeds speeds) -> driveRelativeAutobuilder(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants (these are not known rn because robot isnt working?)
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                    new PIDConstants(0.1,0,0.0), // Translation PID constants (these are not known rn because robot isnt working?)
+                    new PIDConstants(5.0, 0.0, 0) // Rotation PID constants
             ),
             new RobotConfig( //all of these are wrong fix them 
                 ROBOT_MASS,
