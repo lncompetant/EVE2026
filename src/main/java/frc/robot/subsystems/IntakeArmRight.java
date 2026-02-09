@@ -1,24 +1,70 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.ClosedLoopConfig;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 
-public class IntakeArmRight extends SubsystemBase {
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.configs.constants.PortConstants;
+
+public class IntakeArmRight extends SubsystemBase{
+    public static IntakeArmRight intake;
+    private SparkMax intakeMotor;
+    private SparkMaxConfig intakeConfig;
+    private ProfiledPIDController positionController;
+    private SparkClosedLoopController pidControl;
+    private double setpoint;
+    private double motorSpeed = 0;
+    private final double KG = 0.1;
     
+    IntakeArmRight() {
+        intakeMotor = new SparkMax(PortConstants.IntakeArmRight.sparkIntakeRight, MotorType.kBrushless);
+        intakeConfig = new SparkMaxConfig();
+        
+        intakeConfig.closedLoop
+                .p(2)
+                .i(0)
+                .d(0);
+
+        intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        pidControl = intakeMotor.getClosedLoopController();
+        // positionController = new ProfiledPIDController(2, 0, 0, null);
+        // positionController.setTolerance(0.01);
+    }
+
+    public void setSpeed(double speed){
+        intakeMotor.set(speed);
+    }
+    
+    public void setSetpoint(double setpoint){
+        this.setpoint = setpoint;
+    }
+
+    public double getPosition(){
+        return intakeMotor.getEncoder().getPosition();
+    }
+    
+    public ProfiledPIDController getPIDController(){
+        return positionController;
+    }
+    
+    public void setArmPosition(double targetPosition){
+        pidControl.setSetpoint(targetPosition, SparkMax.ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+    }
+
+    public void setMotorPercent(double motorSpeed){
+        this.motorSpeed=motorSpeed+KG;
+    }
+
+    public static IntakeArmRight getInstance(){
+        if (intake == null){
+            intake = new IntakeArmRight();
+        }
+        return intake;
+    }
 }

@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import frc.robot.configs.constants.*;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,9 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeArmLeft extends SubsystemBase{
     public static IntakeArmLeft intake;
     private SparkMax intakeMotor;
-    private SparkMax intakeFollower;
     private SparkMaxConfig intakeConfig;
-    private SparkMaxConfig intakeFollowerConfig;
     private ProfiledPIDController positionController;
     private SparkClosedLoopController pidControl;
     private double setpoint;
@@ -24,28 +23,18 @@ public class IntakeArmLeft extends SubsystemBase{
     private final double KG = 0.1;
     
     IntakeArmLeft() {
-        intakeMotor = new SparkMax(11, MotorType.kBrushless);
-        intakeFollower = new SparkMax(12, MotorType.kBrushless);
-
+        intakeMotor = new SparkMax(PortConstants.IntakeArmLeft.sparkIntakeLeft, MotorType.kBrushless);
         intakeConfig = new SparkMaxConfig();
-        intakeFollowerConfig = new SparkMaxConfig();
         
         intakeConfig.closedLoop
                 .p(2)
                 .i(0)
                 .d(0);
-        
-        intakeFollowerConfig.follow(intakeMotor, false);
-
-        intakeFollower.configure(intakeFollowerConfig, null, PersistMode.kPersistParameters);
 
         intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        intakeFollower.configure(intakeFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         pidControl = intakeMotor.getClosedLoopController();
-    
-        positionController = new ProfiledPIDController(2, 0, 0, null);
-        positionController.setTolerance(0.01);
+        // positionController = new ProfiledPIDController(2, 0, 0, null);
+        // positionController.setTolerance(0.01);
     }
 
     public void setSpeed(double speed){

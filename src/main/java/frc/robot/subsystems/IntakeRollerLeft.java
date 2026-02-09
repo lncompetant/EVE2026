@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.configs.constants.PortConstants;
 
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -18,5 +19,26 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
     
 public class IntakeRollerLeft extends SubsystemBase {
-    
+    private static IntakeRollerLeft intake;
+    private SparkMax rollerMotor;
+    private SparkMaxConfig rollerConfig;
+    private double motorSpeed = 0;
+
+    public IntakeRollerLeft() {
+        rollerMotor = new SparkMax(PortConstants.IntakeRollerLeft.sparkRollLeft, MotorType.kBrushless);
+        rollerConfig = new SparkMaxConfig();
+
+        rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+    public void setSpeed(double speed){
+        rollerMotor.set(speed);
+    }
+
+    public static IntakeRollerLeft getInstance(){
+        if (intake == null){
+            intake = new IntakeRollerLeft();
+        }
+        return intake;
+    }
 }

@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -119,10 +120,7 @@ public class RobotContainer {
         autoChooser = new SendableChooser<Command>();
         autoChooser.setDefaultOption("nothing", null);
         autoChooser.addOption("Timed Taxi", new Taxi());
-        autoChooser.addOption("Limelight Test", new LimelightTest(drivetrain, vision, 0));
-        // Pathplanner autos WIP
-        //autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work")); commented out cause pathplanner errors
-    
+        autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work"));
         SmartDashboard.putData("Auton Chooser", autoChooser);
     }
 
