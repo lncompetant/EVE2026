@@ -11,7 +11,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,6 +29,8 @@ import frc.robot.commands.autons.timed.Taxi;
 import frc.robot.configs.constants.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -167,17 +168,17 @@ public class RobotContainer {
         // Pathplanner autos WIP
         // autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work")); 
     
-                drivetrain.applyRequest(() -> idle)
-            );
+                // drivetrain.applyRequest(() -> idle)
+            // );
         }
     
-        public void configureAuto() {
-        autoChooser = new SendableChooser<Command>();
-        autoChooser.setDefaultOption("nothing", null);
-        autoChooser.addOption("Timed Taxi", new Taxi());
-        autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work"));
-        SmartDashboard.putData("Auton Chooser", autoChooser);
-    }
+    //     public void configureAuto() {
+    //     autoChooser = new SendableChooser<Command>();
+    //     autoChooser.setDefaultOption("nothing", null);
+    //     autoChooser.addOption("Timed Taxi", new Taxi());
+    //     autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work"));
+    //     SmartDashboard.putData("Auton Chooser", autoChooser);
+    // }
 
     //     public static Command getPlanned(String plan) {
     //         BasicCommands.setCommands();
