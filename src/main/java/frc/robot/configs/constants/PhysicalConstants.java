@@ -2,7 +2,7 @@ package frc.robot.configs.constants;
 import edu.wpi.first.math.util.Units;
 
 public class PhysicalConstants {
-    public final static class CommandSwerveDrivetrain {
+    public final class CommandSwerveDrivetrain {
         // The left-to-right distance between the drivetrain wheels measured from center
 		// to center.
 		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(22.75);
@@ -41,5 +41,28 @@ public class PhysicalConstants {
 
 		public static final double ODOMETRY_MULTIPLIER = 5.67;
 		// public static final double ODOMETRY_MULTIPLIER = 5.575;
+    }
+	public final class Feeder {
+
+    }
+
+    public final class IntakeArmLeft {
+
+    }
+
+    public final class IntakeArmRight {
+
+    }
+
+    public final class IntakeRollerLeft {
+
+    }
+
+    public final class IntakeRollerRight {
+
+    }
+
+    public final class Shooter {
+
     }
 }

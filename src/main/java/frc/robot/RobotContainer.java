@@ -11,7 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
-import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.autons.BasicCommands; 
+import frc.robot.commands.autons.apriltag.Angle2AprilTag;
+// import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
 import frc.robot.commands.autons.timed.Taxi;
 import frc.robot.configs.constants.TunerConstants;
@@ -103,6 +105,8 @@ public class RobotContainer {
             joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
     
             drivetrain.registerTelemetry(logger::telemeterize);
+            
+            joystick.x().whileTrue(new Angle2AprilTag(0));
         }
         
         public Command getPathPlannerCommand(){
@@ -163,6 +167,15 @@ public class RobotContainer {
         // Pathplanner autos WIP
         // autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work")); 
     
+                drivetrain.applyRequest(() -> idle)
+            );
+        }
+    
+        public void configureAuto() {
+        autoChooser = new SendableChooser<Command>();
+        autoChooser.setDefaultOption("nothing", null);
+        autoChooser.addOption("Timed Taxi", new Taxi());
+        autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work"));
         SmartDashboard.putData("Auton Chooser", autoChooser);
     }
 

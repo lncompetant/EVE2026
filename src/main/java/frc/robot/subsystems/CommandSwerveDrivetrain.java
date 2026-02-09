@@ -446,4 +446,24 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Optional<Pose2d> samplePoseAt(double timestampSeconds) {
         return super.samplePoseAt(Utils.fpgaToCurrentTime(timestampSeconds));
     }
+
+    public void setDrive(ChassisSpeeds chassisSpeeds) {
+        if (chassisSpeeds == null) {
+            return;
+        }
+        SwerveRequest request = new SwerveRequest.FieldCentric()
+            .withVelocityX(chassisSpeeds.vxMetersPerSecond)
+            .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+            .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond);
+        setControl(request);
+    }
+
+    public double calculateChangeRotateController(double wantedAngle) {
+        //need to be fixed to work 
+        return aprilTagOmegaController.calculate(getRotation2d().getDegrees(), wantedAngle);
+    }
+
+    public Rotation2d getRotation2d() {
+        return getPose().getRotation();
+    }
 }
