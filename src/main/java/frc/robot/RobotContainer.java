@@ -9,10 +9,12 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.autons.BasicCommands; 
 import frc.robot.commands.autons.apriltag.Angle2AprilTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
@@ -47,16 +50,22 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     
+    // private PathPlannerPath pathPlannerTest = PathPlannerPath.fromPathFile("DriveVertical");
+    // private Command autonomousCommand = AutoBuilder.followPath(pathPlannerTest);
+
+    
     //armaan bind linlight command to a button on the operator controller make object then do in configure bindings
     //im so sorry anthony i have failed yoour diing wish sammy if you are reading this right now please do his wish
    
     private final Vision vision = Vision.getInstance();
+    
     
     public static SendableChooser<Command> autoChooser;
 
     public AutoBuilder autoBuilder;
 
         public RobotContainer() {
+            drivetrain.configureAutoBuilder();
             configureBindings();
             configureAuto();
         }
@@ -99,11 +108,50 @@ public class RobotContainer {
             
             joystick.x().whileTrue(new Angle2AprilTag(0));
         }
-    
+        
+        public Command getPathPlannerCommand(){
+            try{
+        // Load the path you want to follow using its name in the GUI
+                PathPlannerPath path = PathPlannerPath.fromPathFile("DriveVertical");
+        // Create a path following command using AutoBuilder. This will also trigger event markers.
+                return AutoBuilder.followPath(path);
+            } 
+            catch (Exception e) {
+                DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+                return Commands.none();
+            }
+  
+        }
         public Command getAutonomousCommand() {
             // Simple drive forward auton
-            final var idle = new SwerveRequest.Idle();
-            return Commands.sequence(
+            return autoChooser.getSelected();
+            // final var idle = new SwerveRequest.Idle();
+            // return Commands.sequence(
+            //     // Reset our field centric heading to match the robot
+            //     // facing away from our alliance station wall (0 deg).
+            //     drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
+            //     // Then slowly drive forward (away from us) for 5 seconds.
+            //     drivetrain.applyRequest(() ->
+            //         drive.withVelocityX(0.5)
+            //             .withVelocityY(0)
+            //             .withRotationalRate(0)
+            //     )
+            //     .withTimeout(5.0),
+            //     // Finally idle for the rest of auton
+            //     drivetrain.applyRequest(() -> idle)
+            // );
+        }
+    
+        public void configureAuto() {
+        final var idle = new SwerveRequest.Idle();
+        autoChooser = new SendableChooser<Command>();
+        autoChooser.setDefaultOption("nothing", null);
+        autoChooser.addOption("Pathplanner Rotate", new PathPlannerAuto("RotationAuto"));
+        autoChooser.addOption("Pathplanner Vertical", new PathPlannerAuto("DriveAuto"));
+        autoChooser.addOption("Pathplanner ZigZag", new PathPlannerAuto("ZigZagAuto"));
+        autoChooser.addOption("Timed Taxi", new Taxi());
+        autoChooser.addOption("Limelight Test", new LimelightTest(drivetrain, vision, 0));
+        autoChooser.addOption("Drive forward nopathplan",Commands.sequence(
                 // Reset our field centric heading to match the robot
                 // facing away from our alliance station wall (0 deg).
                 drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
@@ -115,6 +163,10 @@ public class RobotContainer {
                 )
                 .withTimeout(5.0),
                 // Finally idle for the rest of auton
+                drivetrain.applyRequest(() -> idle)));
+        // Pathplanner autos WIP
+        // autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work")); 
+    
                 drivetrain.applyRequest(() -> idle)
             );
         }

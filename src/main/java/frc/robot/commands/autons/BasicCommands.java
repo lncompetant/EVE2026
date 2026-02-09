@@ -5,6 +5,7 @@ package frc.robot.commands.autons;
 // import frc.robot.commands.autons.apriltag.HuntTag;
 import frc.robot.configs.constants.PhysicalConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.autons.timed.Taxi;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -17,5 +18,7 @@ public class BasicCommands {
 
     public static void setCommands() {
         // NamedCommands.registerCommand("GoLimelight",new GoToAprilTag(drivetrain, vision, vision.getTagId()).withTimeout(5.0));
+        // NamedCommands.registerCommand("AlignToTag", new AlignToTag(drivetrain, vision, 0));
+        NamedCommands.registerCommand("Taxi", new Taxi());
     }
 }
