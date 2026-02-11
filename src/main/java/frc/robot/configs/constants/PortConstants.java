@@ -27,6 +27,13 @@ public final class PortConstants {
     }
 
     public final class Shooter {
+        public static final int talonFXShooterLeader = 0;
+        public static final int talonFXShooterFollowerA = 0;
+        public static final int talonFXShooterFollowerB = 0;
+    }
 
+    public final class Hood {
+        public static final int servoHood = 0;
+        public static int canCoderHood = 0;
     }
 }

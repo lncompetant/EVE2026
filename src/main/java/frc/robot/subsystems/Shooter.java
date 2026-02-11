@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.configs.constants.PortConstants;
+
+import javax.sound.sampled.Port;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -24,13 +27,11 @@ public class Shooter extends SubsystemBase {
         new VelocityVoltage(0).withSlot(0);
 
     public Shooter() {
-
-        shooterLeader = new TalonFX(20);
-        shooterFollowerA = new TalonFX(21);
-        shooterFollowerB = new TalonFX(22);
+        shooterLeader = new TalonFX(PortConstants.Shooter.talonFXShooterLeader);
+        shooterFollowerA = new TalonFX(PortConstants.Shooter.talonFXShooterFollowerA);
+        shooterFollowerB = new TalonFX(PortConstants.Shooter.talonFXShooterFollowerB);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
-
         config.Slot0.kP = 0.15;
         config.Slot0.kI = 0.0;
         config.Slot0.kD = 0.01;
@@ -40,8 +41,10 @@ public class Shooter extends SubsystemBase {
         shooterFollowerA.getConfigurator().apply(config);
         shooterFollowerB.getConfigurator().apply(config);
 
-        // shooterFollowerA.setControl(new Follower(20, false));
-        // shooterFollowerB.setControl(new Follower(20, false));
+        // shooterFollowerA.setControl(new Follower(PortConstants.Shooter.talonFXShooterLeader, false));
+        // shooterFollowerB.setControl(new Follower(PortConstants.Shooter.talonFXShooterLeader, false));
+        
+        // Probably need to indiviual set control modes for the followers
     }
 }
 
