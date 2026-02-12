@@ -46,5 +46,20 @@ public class Shooter extends SubsystemBase {
         
         // Probably need to indiviual set control modes for the followers
     }
+
+    public void setShooterSpeed(double speed) {
+        velocityRequest.withVelocity(speed);
+        shooterLeader.setControl(velocityRequest);
+        shooterFollowerA.setControl(velocityRequest);
+        shooterFollowerB.setControl(velocityRequest);
+    }
+
+    public void setAdvancedShooterSpeed(double speed) {
+        
+    }
+
+    // public double getShooterSpeed() {
+    //     // return shooterLeader.getVelocity();
+    // }
 }
 
