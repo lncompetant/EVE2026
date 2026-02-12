@@ -20,11 +20,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.autons.BasicCommands; 
+import frc.robot.commands.actions.endeffector.moveFeeder;
+import frc.robot.commands.actions.endeffector.moveLeftIntake;
+import frc.robot.commands.actions.endeffector.moveLeftRoller;
+import frc.robot.commands.actions.endeffector.moveRightIntake;
+import frc.robot.commands.actions.endeffector.moveRightRoller;
 import frc.robot.commands.autons.apriltag.Angle2AprilTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
+import frc.robot.commands.autons.pathplanner.BasicCommands;
 import frc.robot.commands.autons.timed.Taxi;
 import frc.robot.configs.constants.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -47,6 +53,8 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController visionController = new CommandXboxController(1);
+    private final CommandXboxController endeffectControl = new CommandXboxController(2);
+
     
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -108,6 +116,20 @@ public class RobotContainer {
             drivetrain.registerTelemetry(logger::telemeterize);
             
             joystick.x().whileTrue(new Angle2AprilTag(0));
+
+            //Subsystem commands for the endeffector, binded to the operator controller
+            new Trigger(() -> endeffectControl.getLeftY() > 0.05).whileTrue(new moveLeftIntake(endeffectControl));
+            new Trigger(() -> endeffectControl.getLeftY() < -0.05).whileTrue(new moveLeftIntake(endeffectControl));
+
+            new Trigger(() -> endeffectControl.getRightY() > 0.05).whileTrue(new moveRightIntake(endeffectControl));
+            new Trigger(() -> endeffectControl.getRightY() < -0.05).whileTrue(new moveRightIntake(endeffectControl));
+            
+            endeffectControl.leftBumper().whileTrue(new moveRightRoller(0.5));
+            endeffectControl.rightBumper().whileTrue(new moveLeftRoller(0.5));
+            
+            endeffectControl.pov(0).whileTrue(new moveFeeder(0.5));
+            endeffectControl.pov(180).whileTrue(new moveFeeder(-0.5));
+
         }
         
         public Command getPathPlannerCommand(){

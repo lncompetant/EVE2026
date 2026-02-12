@@ -22,7 +22,6 @@ public class Hood extends SubsystemBase {
 
     Hood() {        
         hoodEncoder = new CANcoder(PortConstants.Hood.canCoderHood);
-
         hoodServo = new ServoHub(PortConstants.Hood.servoHood);
         hoodConfig = new ServoHubConfig();
         hoodConfig

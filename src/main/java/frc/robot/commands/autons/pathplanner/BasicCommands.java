@@ -1,4 +1,4 @@
-package frc.robot.commands.autons;
+package frc.robot.commands.autons.pathplanner;
 
 // import frc.robot.commands.autons.apriltag.AlignToTag;
 // import frc.robot.commands.autons.apriltag.GoToAprilTag;

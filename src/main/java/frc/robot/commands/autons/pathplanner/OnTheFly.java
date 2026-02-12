@@ -3,7 +3,7 @@
 2: figure out how to flip from red alliance to blue alliance
 3: figure out how to follow a pre-generated path after the path that was generated on the fly
 4: figure out difference between pathfinding and on the fly path generation https://pathplanner.dev/pplib-pathfinding.html (I think I need to do pathfinding not onthefly)*/
-package frc.robot.commands.autons;
+package frc.robot.commands.autons.pathplanner;
 
 import java.util.List;
 
