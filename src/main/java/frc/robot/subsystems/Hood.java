@@ -19,7 +19,7 @@ public class Hood extends SubsystemBase {
     //Estimate, temporarily using this as a placeholder
     public double rot = 1.9;
     public CANcoder hoodEncoder;
-
+    
     Hood() {        
         hoodEncoder = new CANcoder(PortConstants.Hood.canCoderHood);
         hoodServo = new ServoHub(PortConstants.Hood.servoHood);
