@@ -24,7 +24,7 @@ public class Vision extends SubsystemBase {
     private NetworkTable cameraTable;
     private NetworkTable llTable;
 
-
+//SIX SEVEN
     public Vision() {
         fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
         cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);      
