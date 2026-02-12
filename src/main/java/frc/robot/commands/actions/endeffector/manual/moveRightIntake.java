@@ -1,4 +1,4 @@
-package frc.robot.commands.actions.endeffector;
+package frc.robot.commands.actions.endeffector.manual;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;

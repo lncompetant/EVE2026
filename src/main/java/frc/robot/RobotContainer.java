@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.actions.endeffector.moveFeeder;
-import frc.robot.commands.actions.endeffector.moveLeftIntake;
-import frc.robot.commands.actions.endeffector.moveLeftRoller;
-import frc.robot.commands.actions.endeffector.moveRightIntake;
-import frc.robot.commands.actions.endeffector.moveRightRoller;
+import frc.robot.commands.actions.endeffector.manual.moveFeeder;
+import frc.robot.commands.actions.endeffector.manual.moveLeftIntake;
+import frc.robot.commands.actions.endeffector.manual.moveLeftRoller;
+import frc.robot.commands.actions.endeffector.manual.moveRightIntake;
+import frc.robot.commands.actions.endeffector.manual.moveRightRoller;
 import frc.robot.commands.autons.apriltag.Angle2AprilTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;

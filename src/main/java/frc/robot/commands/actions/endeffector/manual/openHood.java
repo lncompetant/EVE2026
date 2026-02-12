@@ -1,17 +1,17 @@
-package frc.robot.commands.actions.endeffector;
+package frc.robot.commands.actions.endeffector.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class closeHood extends Command {
-    
+public class openHood extends Command {
+
     @Override
     public void initialize() {
-        // Code to initialize the hood closing
+        // Code to initialize the hood opening
     }
 
     @Override
     public void execute() {
-        // Code to close the hood
+        // Code to open the hood
     }
 
     @Override
@@ -21,8 +21,8 @@ public class closeHood extends Command {
 
     @Override
     public boolean isFinished() {
-        // Code to determine when the hood is fully closed
-        return false; // Change this to true when the hood is closed
+        // Code to determine when the hood is fully open
+        return false; // Change this to true when the hood is open
     }
     
 }
