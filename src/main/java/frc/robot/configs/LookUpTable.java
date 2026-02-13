@@ -41,10 +41,10 @@ public class LookUpTable {
         return output;
     }
 
-    public static double map(double data, double minIn, double maxIn, double minOut, double maxOut) {
+    public static double map(double input, double minIn, double maxIn, double minOut, double maxOut) {
         double inRange = maxIn - minIn;
         double outRange = maxOut - minOut;
         
-        return (data * outRange) / inRange;
+        return (((input - minIn) * outRange) / inRange) + minOut;
     }
 }
