@@ -51,7 +51,7 @@ public class Hood extends SubsystemBase {
         hoodEncoder.getConfigurator().apply(encoderconfig);
 
         hoodServo = new ServoHub(PortConstants.Hood.servoHood);
-        hoodServo2 = new ServoHub(PortConstants.Hood.canCoderHood);
+        hoodServo2 = new ServoHub(PortConstants.Hood.servoHood2);
 
         hoodConfig = new ServoHubConfig();
         hoodConfig
@@ -114,7 +114,7 @@ public class Hood extends SubsystemBase {
 
         double pulse = 1500 + (speed * 1000); // -1 -> 500, 1 -> 2500
         pulse = Math.max(500, Math.min(2500, pulse));
-        
+
         channel0.setPulseWidth((int) pulse);
         channel1.setPulseWidth((int) (3000 - pulse));
 
