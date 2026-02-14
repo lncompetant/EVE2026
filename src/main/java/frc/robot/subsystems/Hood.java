@@ -10,16 +10,18 @@ import com.revrobotics.servohub.ServoChannel.ChannelId;
 import com.revrobotics.servohub.config.ServoChannelConfig;
 import com.revrobotics.servohub.config.ServoHubConfig;
 import com.revrobotics.encoder.*;
+import frc.robot.configs.LookUpTable;
 
 
 public class Hood extends SubsystemBase {
+    public static LookUpTable table;
     public static Hood hood;
     public ServoHub hoodServo;
     public ServoHubConfig hoodConfig;
     //Estimate, temporarily using this as a placeholder
     public double rot = 1.9;
     public CANcoder hoodEncoder;
-    
+
     Hood() {        
         hoodEncoder = new CANcoder(PortConstants.Hood.canCoderHood);
         hoodServo = new ServoHub(PortConstants.Hood.servoHood);
@@ -31,32 +33,27 @@ public class Hood extends SubsystemBase {
         hoodServo.configure(hoodConfig, ResetMode.kResetSafeParameters);
     }
 
-    public void setHoodSpeed(double targetRotation) {
+    public void setHoodPosition(double targetRotation) {
         //Might be channel 0 
         ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
+        ServoChannel channel1 = hoodServo.getServoChannel(ChannelId.kChannelId1);
         channel0.setPowered(true);
         channel0.setEnabled(true);
+        
+        channel1
         // I think convert targetRotation to pulse width here, but I'm not sure how to do that
         //i'll do research later just a placeholder for now
-        double pulse = 1500.0 + (targetRotation * rot);
+
+
+        double pulse = 1500.0 + (targetRotation * getCancoderPosition());
+        //HARD PART NEEDS TO MAYBE POSSIBLY BE CONVERTED LATER
+
+
         //uhh set limits on pulse width to be between 500 and 2500 
-        pulse = Math.max(500.0, Math.min(2500.0, pulse));
+        pulse = table.map(pulse,0.0,1.0,500.0,2500.0);
         //cast to int and set pulse width
-        channel0.setPulseWidth((int) Math.round(pulse));
+        channel0.setPulseWidth((int) (pulse));
         //not accounting for cancoder here
-    }
-
-    public void setHoodPosition(double targetPosition) {
-        targetPosition = Math.max(0.0, Math.min(1.0, targetPosition)); 
-        int minPulse = 500;
-        int maxPulse = 2500;
-        // Map 0 (up) / 1 (down) across the servo pulse range.
-        // Change this to use cancoder value instead of target position, but for now just use target position as a placeholder
-        // double rotations = targetPosition * rot;
-        int pulse = (int) Math.round(minPulse + targetPosition * (maxPulse - minPulse));
-
-        ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
-        channel0.setPulseWidth(pulse);
     }
 
     public double getHoodPosition() {
@@ -66,7 +63,7 @@ public class Hood extends SubsystemBase {
             return 0;
         }
         int pulseWidth = channel0.getPulseWidth();
-        return (pulseWidth - 1500.0) / rot;
+        return (pulseWidth - 1500.0) / getCancoderPosition(); //Divided by rot
     }
     
     public double getCancoderPosition(){
