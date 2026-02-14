@@ -27,6 +27,7 @@ import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 import org.mort11.commands.actions.endeffector.manual.Shoot;
+import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
 import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
 import org.mort11.commands.autons.apriltag.Angle2AprilTag;
@@ -158,9 +159,13 @@ public class RobotContainer {
             manualController.b().onTrue(setIntakeRight.intake());
 
             manualController.x().onTrue(setIntakeLeft.up());
-            manualController.y().onTrue(setIntakeRight.up());   
-            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new shoot(1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new shoot(-1));
+            manualController.y().onTrue(setIntakeRight.up());
+
+            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
+
+            manualController.leftStick().onTrue(new setHood(45));
+            manualController.rightStick().onTrue(new setHood(80));
 
 
         }

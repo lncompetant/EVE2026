@@ -7,7 +7,7 @@ public class setHood extends Command {
     private Hood hood;
     private double targetAngle;
     
-    setHood(double targetAngle) {
+    public setHood(double targetAngle) {
         hood = Hood.getInstance();
         this.targetAngle = targetAngle;
         addRequirements(hood);
