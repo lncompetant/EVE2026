@@ -21,26 +21,23 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-<<<<<<< HEAD:src/main/java/frc/robot/RobotContainer.java
-import frc.robot.commands.actions.endeffector.manual.moveFeeder;
-import frc.robot.commands.actions.endeffector.manual.moveLeftIntake;
-import frc.robot.commands.actions.endeffector.manual.moveLeftRoller;
-import frc.robot.commands.actions.endeffector.manual.moveRightIntake;
-import frc.robot.commands.actions.endeffector.manual.moveRightRoller;
-import frc.robot.commands.actions.endeffector.manual.shoot;
-import frc.robot.commands.actions.endeffector.pid.setIntakeLeft;
-import frc.robot.commands.actions.endeffector.pid.setIntakeRight;
-import frc.robot.commands.autons.apriltag.Angle2AprilTag;
-// import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
-import frc.robot.commands.autons.apriltag.LimelightTest;
-import frc.robot.commands.autons.pathplanner.BasicCommands;
-import frc.robot.commands.autons.timed.Taxi;
-import frc.robot.configs.constants.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Vision;
-=======
+import org.mort11.commands.actions.endeffector.manual.moveFeeder;
+import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
+import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
+import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
+import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
+import org.mort11.commands.actions.endeffector.manual.shoot;
+import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
+import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
+import org.mort11.commands.autons.apriltag.Angle2AprilTag;
+// import org.mort11.commands.autons.BasicCommands; commented out for now bc pathplanner errors
+import org.mort11.commands.autons.apriltag.LimelightTest;
+import org.mort11.commands.autons.pathplanner.BasicCommands;
+import org.mort11.commands.autons.timed.Taxi;
+import org.mort11.configs.constants.TunerConstants;
+import org.mort11.subsystems.CommandSwerveDrivetrain;
+import org.mort11.subsystems.Vision;
 
->>>>>>> ea031481b399a9d9eea187a66a402aa0c0132b6f:src/main/java/org/mort11/RobotContainer.java
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import static edu.wpi.first.units.Units.*;
@@ -150,13 +147,10 @@ public class RobotContainer {
             new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
-<<<<<<< HEAD:src/main/java/frc/robot/RobotContainer.java
-            endeffectControl.leftBumper().whileTrue(new moveLeftRoller(0.5));
-            endeffectControl.rightBumper().whileTrue(new moveRightRoller(0.5));
-=======
+            manualController.leftBumper().whileTrue(new moveLeftRoller(0.5));
+            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
             manualController.leftBumper().whileTrue(new moveRightRoller(0.5));
             manualController.rightBumper().whileTrue(new moveLeftRoller(0.5));
->>>>>>> ea031481b399a9d9eea187a66a402aa0c0132b6f:src/main/java/org/mort11/RobotContainer.java
             
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-0.5));
@@ -164,14 +158,13 @@ public class RobotContainer {
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
 
-            endeffectControl.a().onTrue(setIntakeLeft.intake());
-            endeffectControl.b().onTrue(setIntakeRight.intake());
+            manualController.a().onTrue(setIntakeLeft.intake());
+            manualController.b().onTrue(setIntakeRight.intake());
 
-            endeffectControl.x().onTrue(setIntakeLeft.up());
-            endeffectControl.y().onTrue(setIntakeRight.up());
-
-            new Trigger(() -> endeffectControl.getLeftTriggerAxis() > 0.05).whileTrue(new shoot(1));
-            new Trigger(() -> endeffectControl.getRightTriggerAxis() > 0.05).whileTrue(new shoot(-1));
+            manualController.x().onTrue(setIntakeLeft.up());
+            manualController.y().onTrue(setIntakeRight.up());   
+            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new shoot(1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new shoot(-1));
 
 
         }

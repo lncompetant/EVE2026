@@ -14,7 +14,7 @@ import com.revrobotics.servohub.config.ServoHubConfig;
 import com.revrobotics.encoder.*;
 import edu.wpi.first.math.controller.PIDController;
 
-import frc.robot.configs.LookUpTable;
+import org.mort11.configs.LookUpTable;
 
 
 public class Hood extends SubsystemBase {
@@ -33,7 +33,6 @@ public class Hood extends SubsystemBase {
     public double rot = 1.9;
     public CANcoder hoodEncoder;
     public CANcoderConfiguration encoderconfig;
-
     //
 
     Hood() {        
@@ -77,10 +76,10 @@ public class Hood extends SubsystemBase {
 
         // hoodPosDegrees = map(CurrentencoderPos, minEncoderPos, MaxencoderPos, minDegrees, maxDegrees);
 
-        currenthoodPosDegrees = table.map(getCancoderPosition(), minEncoderPos, MaxencoderPos, 0, 30);
+        currenthoodPosDegrees = table.map(getCancoderPosition(), 0, 0, 0, 30);
         //uhh set limits on pulse width to be between 500 and 2500 
         
-        double servopulse = table.map(hoodPosDegrees,80,45.0,500.0,2500.0);
+        double servopulse = table.map(currenthoodPosDegrees,80,45.0,500.0,2500.0);
         
         // PID control to adjust pulse width based on error between current position and target position
         pidEffort = pidController.calculate(currenthoodPosDegrees, hoodAngleDegrees);

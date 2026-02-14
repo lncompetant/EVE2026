@@ -1,7 +1,7 @@
 package org.mort11.commands.actions.endeffector.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Hood;
+import org.mort11.subsystems.Hood;
 
 public class openHood extends Command {
     private Hood hood;

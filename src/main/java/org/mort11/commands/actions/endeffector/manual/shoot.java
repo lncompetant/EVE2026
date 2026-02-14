@@ -2,7 +2,7 @@ package org.mort11.commands.actions.endeffector.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Shooter;
+import org.mort11.subsystems.Shooter;
 
 public class shoot extends Command {
     private static Shooter shooter;

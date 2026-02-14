@@ -12,10 +12,14 @@ public final class PIDConstants {
     }
 
     public static final class IntakeArmLeft {
+        public final static double down = 0;
+        public final static double up = 0;
 
     }
 
     public static final class IntakeArmRight {
+        public final static double down = 0;
+        public final static double up = 0;
 
     }
 

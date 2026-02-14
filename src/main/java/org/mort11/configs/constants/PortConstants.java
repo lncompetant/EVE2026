@@ -43,6 +43,7 @@ public final class PortConstants {
 
     public static final class Hood {
         public static final int servoHood = -1;
+        public static final int servoHood2 = -1;
         public static int canCoderHood = -1;
     }
 

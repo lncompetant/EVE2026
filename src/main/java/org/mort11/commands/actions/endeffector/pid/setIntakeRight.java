@@ -3,7 +3,7 @@ package org.mort11.commands.actions.endeffector.pid;
 import org.mort11.subsystems.IntakeArmRight;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.configs.constants.PIDconstants;
+import org.mort11.configs.constants.PIDConstants;
 
 public class setIntakeRight extends Command {
     private IntakeArmRight intakeArmRight;
@@ -29,10 +29,10 @@ public class setIntakeRight extends Command {
     }
 
     public static Command intake(){
-        return new setIntakeRight(PIDconstants.IntakeArmRight.down);
+        return new setIntakeRight(PIDConstants.IntakeArmRight.down);
     }
 
     public static Command up(){
-        return new setIntakeRight(PIDconstants.IntakeArmRight.up);
+        return new setIntakeRight(PIDConstants.IntakeArmRight.up);
     }
 }
