@@ -51,7 +51,7 @@ public class Hood extends SubsystemBase {
         hoodEncoder.getConfigurator().apply(encoderconfig);
 
         hoodServo = new ServoHub(PortConstants.Hood.servoHood);
-        hoodServo2 = new ServoHub(PortConstants.Hood.servoHood2);
+        hoodServo2 = new ServoHub(PortConstants.Hood.canCoderHood);
 
         hoodConfig = new ServoHubConfig();
         hoodConfig

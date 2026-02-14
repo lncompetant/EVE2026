@@ -58,7 +58,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private PIDController aprilTagXController;
 	private PIDController aprilTagYController;
-	private PIDController aprilTagOmegaController;
+	private PIDController aprilTagOmegaController;      
 
 
     private final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();

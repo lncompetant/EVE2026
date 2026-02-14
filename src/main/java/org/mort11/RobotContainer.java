@@ -37,7 +37,6 @@ import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
 import org.mort11.subsystems.Vision;
-
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import static edu.wpi.first.units.Units.*;
@@ -74,7 +73,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandPS5Controller driveController = new CommandPS5Controller(DRIVE_CONTROLLER);
-    private final CommandXboxController endeffectorController = new CommandXboxController(ENDEFFECTORCONTROLLER);
+    private final CommandXboxController endeffectorController = new CommandXboxController(ENDEFFECTOR_CONTROLLER);
     private final CommandXboxController manualController = new CommandXboxController(MANUAL_CONTROLLER);
 
     
@@ -84,9 +83,6 @@ public class RobotContainer {
     // private PathPlannerPath pathPlannerTest = PathPlannerPath.fromPathFile("DriveVertical");
     // private Command autonomousCommand = AutoBuilder.followPath(pathPlannerTest);
 
-    
-    //armaan bind linlight command to a button on the operator controller make object then do in configure bindings
-    //im so sorry anthony i have failed yoour diing wish sammy if you are reading this right now please do his wish
    
     private final Vision vision = Vision.getInstance();
     
@@ -94,7 +90,6 @@ public class RobotContainer {
     public static SendableChooser<Command> autoChooser;
 
     public AutoBuilder autoBuilder;
-
         public RobotContainer() {
             drivetrain.configureAutoBuilder();
             configureBindings();
@@ -147,14 +142,15 @@ public class RobotContainer {
             new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
-            manualController.leftBumper().whileTrue(new moveLeftRoller(0.5));
-            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
+            //Intake Rollers
             manualController.leftBumper().whileTrue(new moveRightRoller(0.5));
             manualController.rightBumper().whileTrue(new moveLeftRoller(0.5));
-            
+
+            //
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-0.5));
 
+            //Turret
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
 
@@ -163,12 +159,9 @@ public class RobotContainer {
 
             manualController.x().onTrue(setIntakeLeft.up());
             manualController.y().onTrue(setIntakeRight.up());   
-            
-            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
-            
-            manualController.start().whileTrue(new Shoot(1));
-            
+            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new shoot(1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new shoot(-1));
+
 
         }
         
