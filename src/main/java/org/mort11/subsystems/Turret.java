@@ -50,8 +50,6 @@ public class Turret extends SubsystemBase {
         this.motorSpeed = motorSpeed + feedforward.calculate(getTurretVelDeg());
     }
 
-
-
     public double getTurretPosDeg() {
         return getMotorRotationPosition() * MOTOR_ROTATIONS_TO_TURRET_DEG + STARTING_POSITION_DEG;
     }

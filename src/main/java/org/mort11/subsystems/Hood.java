@@ -28,16 +28,25 @@ public class Hood extends SubsystemBase {
     public double currenthoodPosDegrees;
     public PIDController pidController = new PIDController(0.1, 0, 0);
     public double pidEffort;
+    private static final double ROTATIONS_TO_HOOD_DEG = (80-45) / 1.9;
+
 
     //Estimate, temporarily using this as a placeholder
     public double rot = 1.9;
     public CANcoder hoodEncoder;
     public CANcoderConfiguration encoderconfig;
+
+    //hood calculations
+    private double lastAbsPos = 0.0;
+    private int rotationCount = 0;
+    private double continuousPosition = 0.0;
+
     //
 
     Hood() {        
         hoodEncoder = new CANcoder(PortConstants.Hood.canCoderHood);
         encoderconfig = new CANcoderConfiguration();
+        // encoderconfig.MagnetSensor.SensorDirection = 
         
         hoodEncoder.getConfigurator().apply(encoderconfig);
 
@@ -46,7 +55,7 @@ public class Hood extends SubsystemBase {
 
         hoodConfig = new ServoHubConfig();
         hoodConfig
-        .channel1.pulseRange(500, 1500, 2500)
+        .channel0.pulseRange(500, 1500, 2500)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         hoodConfig2 = new ServoHubConfig();
@@ -56,51 +65,78 @@ public class Hood extends SubsystemBase {
 
         hoodServo.configure(hoodConfig, ResetMode.kResetSafeParameters);
         hoodServo2.configure(hoodConfig2, ResetMode.kResetSafeParameters);
+
+        pidController.setTolerance(0.5); 
     }
 
-    public void setHoodPosition(double hoodAngleDegrees) {
-        //Might be channel 0              
+    public void setHoodPosition(double targetDeg) {
+    ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
+    ServoChannel channel1 = hoodServo2.getServoChannel(ChannelId.kChannelId1);
+
+    channel0.setPowered(true);
+    channel0.setEnabled(true);
+    channel1.setPowered(true);
+    channel1.setEnabled(true);
+
+    double currentDeg = getHoodPosDeg();
+
+    double pidOutput = pidController.calculate(currentDeg, targetDeg);
+
+    // Clamp PID to -1 to 1 (speed command)
+    pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+
+    // Convert speed -> pulse
+    double pulse = 1500 + (pidOutput * 1000);
+
+    pulse = Math.max(1000, Math.min(2000, pulse));
+
+    channel0.setPulseWidth((int) pulse);
+
+    // Invert second servo
+    channel1.setPulseWidth((int) (3000 - pulse));
+
+    if (pidController.atSetpoint()) {
+    channel0.setPulseWidth(1500);
+    channel1.setPulseWidth(1500);
+    }
+
+    }
+
+    public double getHoodPosDeg() {
+        return getCancoderPosition() * ROTATIONS_TO_HOOD_DEG;
+    }
+
+
+    public double getCancoderPosition() {
+    double absPos = hoodEncoder.getAbsolutePosition().getValueAsDouble(); 
+    // 0.0 → 1.0 rotations
+
+    double delta = absPos - lastAbsPos;
+
+    // Detect wrap forward (0.99 → 0.01)
+    if (delta < -0.5) {
+        rotationCount++;
+    }
+
+    // Detect wrap backward (0.01 → 0.99)
+    if (delta > 0.5) {
+        rotationCount--;
+    }
+
+    lastAbsPos = absPos;
+
+    continuousPosition = rotationCount + absPos;
+
+    return continuousPosition;
+}
+
+
+    public void stop() {
         ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
         ServoChannel channel1 = hoodServo2.getServoChannel(ChannelId.kChannelId1);
-        channel0.setPowered(true);
-        channel0.setEnabled(true);
-                                          
-        channel1.setPowered(true);
-        channel1.setEnabled(true);
-        // I think convert targetRotation to pulse width here, but I'm not sure how to do that
-        // I'll do research later just a placeholder for now
-                                          
-        // double pulse = 1500.0 + (hoodAngleDegrees * getCancoderPosition());
-        
-        //HARD PART NEEDS TO MAYBE POSSIBLY BE CONVERTED LATER
 
-        // hoodPosDegrees = map(CurrentencoderPos, minEncoderPos, MaxencoderPos, minDegrees, maxDegrees);
-
-        currenthoodPosDegrees = table.map(getCancoderPosition(), 0, 0, 0, 30);
-        //uhh set limits on pulse width to be between 500 and 2500 
-        
-        double servopulse = table.map(currenthoodPosDegrees,80,45.0,500.0,2500.0);
-        
-        // PID control to adjust pulse width based on error between current position and target position
-        pidEffort = pidController.calculate(currenthoodPosDegrees, hoodAngleDegrees);
-        servopulse += pidEffort;
-
-        // Ensure pulse width is within bounds
-        servopulse = Math.max(500.0, Math.min(2500.0, servopulse));
-        servopulse = table.map(pidEffort,-100.0,100.0,500.0,2500.0);
-
-        //cast to int and set pulse width
-        channel0.setPulseWidth((int) (servopulse));
-
-        //map for reverse direction on second servo since inverted
-        servopulse = table.map(servopulse,500,2500,2500.0,500.0);
-        channel1.setPulseWidth((int) (servopulse));
-        //not accounting for cancoder here
-    }
-
-    public double getCancoderPosition(){
-        double position = hoodEncoder.getPosition().getValueAsDouble();
-        return position;
+        channel0.setPulseWidth(1500);
+        channel1.setPulseWidth(1500);
     }
 
     // public double getCancoderDegrees(){
@@ -108,18 +144,9 @@ public class Hood extends SubsystemBase {
     //     return absrot * 360;
     // }
 
-    public double getHoodPosition() {
-        // Implement method to return current hood position
-        ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
-        if (channel0 == null) {
-            return 0;
-        }
-        int pulseWidth = channel0.getPulseWidth();
-        return (pulseWidth - 1500.0) / getCancoderPosition(); //Divided by rot
-    }
-
     public void periodic() {
-        SmartDashboard.putNumber("Hood Pos", getHoodPosition());
+        getCancoderPosition(); // Update tracking of continuous position
+        SmartDashboard.putNumber("Hood Deg", getHoodPosDeg());
         SmartDashboard.putNumber("Hood Cancoder Pos", getCancoderPosition());
     }
     

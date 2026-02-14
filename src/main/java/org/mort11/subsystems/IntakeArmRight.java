@@ -12,6 +12,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeArmRight extends SubsystemBase{
@@ -41,6 +42,10 @@ public class IntakeArmRight extends SubsystemBase{
 
     public void setSpeed(double speed){
         intakeMotor.set(speed);
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("IntakeArmRightPos", getPosition());
     }
     
     public void setSetpoint(double setpoint){

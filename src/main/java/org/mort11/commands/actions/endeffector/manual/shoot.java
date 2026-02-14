@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.mort11.subsystems.Shooter;
 
-public class shoot extends Command {
-    private static Shooter shooter;
-    private double speed;
+public class Shoot extends Command {
+    private final Shooter shooter;
+    private double percent;
 
-        public shoot(double speed) {
+        public Shoot(double percent) {
             shooter = Shooter.getInstance();
-            this.speed = speed;
+            this.percent = percent;
             addRequirements(shooter);
         }
     
@@ -21,12 +21,12 @@ public class shoot extends Command {
 
     @Override
     public void execute() {
-        shooter.setShooterSpeed(speed);
+        shooter.setShooterPercent(percent);
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooter.setShooterSpeed(0);
+        shooter.setShooterPercent(0);
     }
 
     @Override

@@ -1,26 +1,26 @@
-package org.mort11.commands.actions.endeffector.manual;
+package org.mort11.commands.actions.endeffector.pid;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import org.mort11.subsystems.Hood;
 
-public class closeHood extends Command {
+public class setHood extends Command {
     private Hood hood;
-    private double targetRotation;
+    private double targetAngle;
     
-    closeHood(double targetRotation) {
+    setHood(double targetAngle) {
         hood = Hood.getInstance();
-        this.targetRotation = targetRotation;
+        this.targetAngle = targetAngle;
         addRequirements(hood);
     }
 
     @Override
     public void execute() {
-        hood.setHoodPosition(targetRotation);
+        hood.setHoodPosition(targetAngle);
     }
 
     @Override
     public void end(boolean interrupted) {
-        hood.setHoodPosition(targetRotation);
+        hood.stop();
     }
 
     @Override

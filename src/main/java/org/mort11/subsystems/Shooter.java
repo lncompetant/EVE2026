@@ -12,6 +12,7 @@ import org.mort11.configs.constants.PortConstants;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.controls.Follower;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -26,6 +27,9 @@ public class Shooter extends SubsystemBase {
 
     private final VelocityVoltage velocityRequest =
         new VelocityVoltage(0).withSlot(0);
+
+    private static final double MAX_RPS = 7530.0 / 60.0; // 125.5
+
 
     public Shooter() {
         shooterLeader = new TalonFX(PortConstants.Shooter.talonFXShooterLeader);
@@ -48,20 +52,39 @@ public class Shooter extends SubsystemBase {
         // Probably need to indiviual set control modes for the followers
     }
 
-    public void setShooterSpeed(double speed) {
-        velocityRequest.withVelocity(speed);
-        shooterLeader.setControl(velocityRequest);
-        shooterFollowerA.setControl(velocityRequest);
-        shooterFollowerB.setControl(velocityRequest);
+    // public void setShooterSpeed(double speed) {
+    //     velocityRequest.withVelocity(speed);
+    //     shooterLeader.setControl(velocityRequest);
+    //     shooterFollowerA.setControl(velocityRequest);
+    //     shooterFollowerB.setControl(velocityRequest);
+    // }
+
+    public void setShooterPercent(double percent) {
+        shooterLeader.set(percent);
+        shooterFollowerA.set(percent);
+        shooterFollowerB.set(percent);
     }
 
-    public void setAdvancedShooterSpeed(double speed) {
+    public void setAdvancedShooterSpeed(double rpm) {
+        
+    }
 
+    public double getDistanceToHub() {
+        return 0.0;
+    }
+
+    public double getAngleHood() {
+        return 0.0;
     }
 
     public double getShooterSpeed() {
         return shooterLeader.getVelocity().getValueAsDouble();
     }
+
+    public double getShooterRPM() {
+        return shooterLeader.getVelocity().getValueAsDouble() * 60.0;
+    }
+
 
     public static Shooter getInstance(){
         if (shooter == null){
