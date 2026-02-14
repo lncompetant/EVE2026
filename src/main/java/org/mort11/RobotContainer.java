@@ -175,8 +175,6 @@ public class RobotContainer {
             //manual hood control
             new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
             new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
- 
-
         }
         
         public Command getPathPlannerCommand(){
