@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.mort11.subsystems.Shooter;
 
-public class Shoot extends Command {
+public class shoot extends Command {
     private final Shooter shooter;
     private double percent;
 
-        public Shoot(double percent) {
+        public shoot(double percent) {
             shooter = Shooter.getInstance();
             this.percent = percent;
             addRequirements(shooter);

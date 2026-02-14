@@ -21,14 +21,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+
 import org.mort11.commands.actions.endeffector.manual.moveFeeder;
-import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
 import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
-import org.mort11.commands.actions.endeffector.manual.Shoot;
-import org.mort11.commands.actions.endeffector.pid.setHood;
+import org.mort11.commands.actions.endeffector.manual.moveHood;
+import org.mort11.commands.actions.endeffector.manual.shoot;
+
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
 import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
 import org.mort11.commands.autons.apriltag.Angle2AprilTag;
@@ -144,37 +145,29 @@ public class RobotContainer {
             new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
-            //Intake Rollers
-            manualController.leftBumper().whileTrue(new moveRightRoller(0.5));
-            manualController.rightBumper().whileTrue(new moveLeftRoller(0.5));
+            //Intake Roller
+            manualController.x().whileTrue(new moveLeftRoller(0.5));
+            manualController.b().whileTrue(new moveRightRoller(0.5));
 
-            //Moving Feeders
+            //Intake
+            manualController.leftBumper().whileTrue(new moveLeftIntake(0.5));
+            manualController.leftTrigger().whileTrue(new moveLeftIntake(-0.5));
+
+            manualController.rightBumper().whileTrue(new moveRightIntake(0.5));
+            manualController.rightTrigger().whileTrue(new moveRightIntake(-0.5));
+            
+
+            //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-0.5));
 
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
-            
-            //Intake Arms down
-            manualController.a().onTrue(setIntakeLeft.intake());
-            manualController.b().onTrue(setIntakeRight.intake());
 
-            //Intake Arms up
-            manualController.x().onTrue(setIntakeLeft.up());
-            manualController.y().onTrue(setIntakeRight.up());
+            manualController.y().whileTrue(new shoot(0.5));
+            manualController.a().whileTrue(new moveHood(0.5));
 
-            //Manual shooting
-            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
-            
-            //set Hood
-            manualController.leftStick().onTrue(new setHood(45)); //up
-            manualController.rightStick().onTrue(new setHood(80)); //down
-
-            //manual hood control
-            new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
-            new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
         }
         
         public Command getPathPlannerCommand(){
