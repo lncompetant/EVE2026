@@ -102,6 +102,25 @@ public class Hood extends SubsystemBase {
 
     }
 
+    public double setHoodSpeed(double speed) {
+        ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
+        ServoChannel channel1 = hoodServo2.getServoChannel(ChannelId.kChannelId1);
+
+        channel0.setPowered(true);
+        channel0.setEnabled(true);
+        channel1.setPowered(true);
+        channel1.setEnabled(true);
+
+
+        double pulse = 1500 + (speed * 1000); // -1 -> 500, 1 -> 2500
+        pulse = Math.max(500, Math.min(2500, pulse));
+        
+        channel0.setPulseWidth((int) pulse);
+        channel1.setPulseWidth((int) (3000 - pulse));
+
+        return pulse;
+    }
+
     public double getHoodPosDeg() {
         return getCancoderPosition() * ROTATIONS_TO_HOOD_DEG;
     }
