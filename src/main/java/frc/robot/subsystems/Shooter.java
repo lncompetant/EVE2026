@@ -18,7 +18,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
-
+        private static Shooter shooter;
     private final TalonFX shooterLeader;
     private final TalonFX shooterFollowerA;
     private final TalonFX shooterFollowerB;
@@ -55,11 +55,18 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setAdvancedShooterSpeed(double speed) {
-        
+
     }
 
-    // public double getShooterSpeed() {
-    //     // return shooterLeader.getVelocity();
-    // }
+    public double getShooterSpeed() {
+        return shooterLeader.getVelocity().getValueAsDouble();
+    }
+
+    public static Shooter getInstance(){
+        if (shooter == null){
+            shooter = new Shooter();
+        }
+        return shooter;
+    }
 }
 

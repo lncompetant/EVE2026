@@ -2,6 +2,7 @@ package frc.robot.commands.actions.endeffector.pid;
 
 import frc.robot.subsystems.IntakeArmLeft;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.configs.constants.PIDconstants;
 
 public class setIntakeLeft extends Command {
     private IntakeArmLeft intakeArmLeft;
@@ -27,10 +28,10 @@ public class setIntakeLeft extends Command {
     }
 
     public static Command intake(){
-        return new setIntakeLeft(30);//fix later
+        return new setIntakeLeft(PIDconstants.IntakeArmLeft.down);
     }
 
     public static Command up(){
-        return new setIntakeLeft(0);
+        return new setIntakeLeft(PIDconstants.IntakeArmLeft.up);
     }
 }

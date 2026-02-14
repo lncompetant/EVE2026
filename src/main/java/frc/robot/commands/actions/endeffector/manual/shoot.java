@@ -2,10 +2,18 @@ package frc.robot.commands.actions.endeffector.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Shooter;
 
 public class shoot extends Command {
+    private static Shooter shooter;
+    private double speed;
 
-
+        public shoot(double speed) {
+            shooter = Shooter.getInstance();
+            this.speed = speed;
+            addRequirements(shooter);
+        }
+    
     @Override
     public void initialize() {
         
@@ -13,17 +21,16 @@ public class shoot extends Command {
 
     @Override
     public void execute() {
-        
+        shooter.setShooterSpeed(speed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        // Code to stop the shooting action if needed
+        shooter.setShooterSpeed(0);
     }
 
     @Override
     public boolean isFinished() {
-        // Code to determine when the shooting action is complete
         return false; // Change this to true when the shooting action is complete
     }
     

@@ -27,6 +27,9 @@ import frc.robot.commands.actions.endeffector.manual.moveLeftIntake;
 import frc.robot.commands.actions.endeffector.manual.moveLeftRoller;
 import frc.robot.commands.actions.endeffector.manual.moveRightIntake;
 import frc.robot.commands.actions.endeffector.manual.moveRightRoller;
+import frc.robot.commands.actions.endeffector.manual.shoot;
+import frc.robot.commands.actions.endeffector.pid.setIntakeLeft;
+import frc.robot.commands.actions.endeffector.pid.setIntakeRight;
 import frc.robot.commands.autons.apriltag.Angle2AprilTag;
 // import frc.robot.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import frc.robot.commands.autons.apriltag.LimelightTest;
@@ -124,11 +127,21 @@ public class RobotContainer {
             new Trigger(() -> endeffectControl.getRightY() > 0.05).whileTrue(new moveRightIntake(endeffectControl));
             new Trigger(() -> endeffectControl.getRightY() < -0.05).whileTrue(new moveRightIntake(endeffectControl));
             
-            endeffectControl.leftBumper().whileTrue(new moveRightRoller(0.5));
-            endeffectControl.rightBumper().whileTrue(new moveLeftRoller(0.5));
+            endeffectControl.leftBumper().whileTrue(new moveLeftRoller(0.5));
+            endeffectControl.rightBumper().whileTrue(new moveRightRoller(0.5));
             
             endeffectControl.pov(0).whileTrue(new moveFeeder(0.5));
             endeffectControl.pov(180).whileTrue(new moveFeeder(-0.5));
+
+            endeffectControl.a().onTrue(setIntakeLeft.intake());
+            endeffectControl.b().onTrue(setIntakeRight.intake());
+
+            endeffectControl.x().onTrue(setIntakeLeft.up());
+            endeffectControl.y().onTrue(setIntakeRight.up());
+
+            new Trigger(() -> endeffectControl.getLeftTriggerAxis() > 0.05).whileTrue(new shoot(1));
+            new Trigger(() -> endeffectControl.getRightTriggerAxis() > 0.05).whileTrue(new shoot(-1));
+
 
         }
         

@@ -41,7 +41,7 @@ public class LookUpTable {
         return output;
     }
 
-    public static double map(double input, double minIn, double maxIn, double minOut, double maxOut) {
+    public double map(double input, double minIn, double maxIn, double minOut, double maxOut) {
         double inRange = maxIn - minIn;
         double outRange = maxOut - minOut;
         
