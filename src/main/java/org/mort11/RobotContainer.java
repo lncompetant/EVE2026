@@ -13,28 +13,26 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+
 import org.mort11.commands.actions.endeffector.manual.moveFeeder;
-import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
 import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
-import org.mort11.commands.actions.endeffector.manual.Shoot;
-import org.mort11.commands.actions.endeffector.pid.setHood;
-import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
-import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
+import org.mort11.commands.actions.endeffector.manual.moveHood;
+import org.mort11.commands.actions.endeffector.manual.shoot;
+import org.mort11.commands.actions.endeffector.manual.MoveTurret;
+import org.mort11.commands.actions.endeffector.manual.MoveClimber;
+
 import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 // import org.mort11.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import org.mort11.commands.autons.apriltag.LimelightTest;
-import org.mort11.commands.autons.pathplanner.BasicCommands;
 import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
@@ -43,21 +41,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.mort11.commands.actions.endeffector.manual.Climb;
-import org.mort11.commands.actions.endeffector.manual.MoveTurret;
-import org.mort11.commands.actions.endeffector.manual.moveFeeder;
-import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
-import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
-import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
-import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 
-import org.mort11.commands.autons.apriltag.Angle2AprilTag;
-import org.mort11.commands.autons.apriltag.LimelightTest;
-import org.mort11.commands.autons.pathplanner.BasicCommands;
-import org.mort11.commands.autons.timed.Taxi;
-import org.mort11.configs.constants.TunerConstants;
-import org.mort11.subsystems.CommandSwerveDrivetrain;
-import org.mort11.subsystems.Vision;
+
+
 
 import static org.mort11.configs.constants.PortConstants.Controller.*;
 import static org.mort11.configs.constants.PhysicalConstants.*;
@@ -139,35 +125,33 @@ public class RobotContainer {
             driveController.square().whileTrue(new Angle2AprilTag(0));
 
             //Subsystem commands for the endeffector, binded to the operator controller
+            //Intake Arms
             new Trigger(() -> manualController.getLeftY() > DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
             new Trigger(() -> manualController.getLeftY() < -DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
 
             new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
-            //Intake Rollers
-            manualController.leftBumper().whileTrue(new moveRightRoller(0.5));
-            manualController.rightBumper().whileTrue(new moveLeftRoller(0.5));
+            //Intake Roller
+            manualController.x().whileTrue(new moveLeftRoller(0.5));
+            manualController.b().whileTrue(new moveRightRoller(0.5));
 
-            //Moving Feeders
+
+            //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-0.5));
 
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
-            
-            //Intake Arms down
-            manualController.a().onTrue(setIntakeLeft.intake());
-            manualController.b().onTrue(setIntakeRight.intake());
 
-            //Intake Arms up
-            manualController.x().onTrue(setIntakeLeft.up());
-            manualController.y().onTrue(setIntakeRight.up());
+            //Shooter
+            manualController.y().whileTrue(new shoot(0.5));
+            manualController.a().whileTrue(new moveHood(0.5));
 
             //Manual shooting
-            new Trigger(() -> manualController.getLeftTriggerAxis() > DEAD_BAND).whileTrue(new Shoot(-1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > DEAD_BAND).whileTrue(new Shoot(1));
+            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
             
             //set Hood
             manualController.leftStick().onTrue(new setHood(45)); //up
@@ -176,12 +160,6 @@ public class RobotContainer {
             //manual hood control
             new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
             new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
-
-            // climber controller
-            new Trigger(() -> manualController.getRightX() > DEAD_BAND).onTrue(new Climb(0.5));
-            new Trigger(() -> manualController.getRightX() < -DEAD_BAND).onTrue(new Climb(-0.5));
-
-
         }
         
         public Command getPathPlannerCommand(){

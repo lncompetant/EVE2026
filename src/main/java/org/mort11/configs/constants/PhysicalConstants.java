@@ -70,11 +70,11 @@ public final class PhysicalConstants {
 		public static final double MANUAL_SPEED = 0.3;
 
 		//positions and ratios
-        public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1 / 15) * (24 / 150);
+        public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1.0 / 15.0) * (24.0 / 150.0);
 		public static final double STARTING_POSITION_DEG = 0;
     }
 
     public static final class Shooter {
-
+	
     }
 }
