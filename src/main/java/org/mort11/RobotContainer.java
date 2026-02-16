@@ -26,9 +26,12 @@ import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 import org.mort11.commands.actions.endeffector.manual.moveHood;
-import org.mort11.commands.actions.endeffector.manual.shoot;
+import org.mort11.commands.actions.endeffector.manual.Shoot;
+import org.mort11.commands.actions.endeffector.pid.setHood;
+import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
+import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
 import org.mort11.commands.actions.endeffector.manual.MoveTurret;
-import org.mort11.commands.actions.endeffector.manual.MoveClimber;
+import org.mort11.commands.actions.endeffector.manual.Climb;
 
 import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 // import org.mort11.commands.autons.BasicCommands; commented out for now bc pathplanner errors
@@ -132,10 +135,16 @@ public class RobotContainer {
             new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
-            //Intake Roller
-            manualController.x().whileTrue(new moveLeftRoller(0.5));
-            manualController.b().whileTrue(new moveRightRoller(0.5));
+            //Set Intake
+            manualController.a().onTrue(setIntakeLeft.intake());
+            manualController.b().onTrue(setIntakeLeft.up());
 
+            manualController.x().onTrue(setIntakeRight.intake());
+            manualController.y().onTrue(setIntakeRight.up());
+
+            //Intake Roller
+            manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
+            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
 
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
@@ -145,21 +154,20 @@ public class RobotContainer {
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
 
-            //Shooter
-            manualController.y().whileTrue(new shoot(0.5));
-            manualController.a().whileTrue(new moveHood(0.5));
-
             //Manual shooting
-            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
+            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(1));
             
             //set Hood
             manualController.leftStick().onTrue(new setHood(45)); //up
             manualController.rightStick().onTrue(new setHood(80)); //down
 
-            //manual hood control
+            //manual hood control dont change is supposed to be weird
             new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
             new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
+
+            new Trigger(() -> manualController.getRightX() > DEAD_BAND).onTrue(new Climb(1)); 
+            new Trigger(() -> manualController.getRightX() < -DEAD_BAND).onTrue(new Climb(-1));
         }
         
         public Command getPathPlannerCommand(){

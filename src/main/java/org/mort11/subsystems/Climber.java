@@ -14,8 +14,19 @@ import org.mort11.configs.constants.PortConstants;
 
 public class Climber extends SubsystemBase {
     private static Climber climber;
+    private SparkMax climbMotor;
+    private SparkMaxConfig climbConfig;
+    private double motorSpeed = 0;
 
     public Climber() {
+        climbMotor = new SparkMax(PortConstants.Climber.CLIMBER_MOTOR, MotorType.kBrushless);
+        climbConfig = new SparkMaxConfig();
+
+        climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+    public void setSpeed(double speed){
+        climbMotor.set(speed);
     }
 
     public static Climber getInstance(){
