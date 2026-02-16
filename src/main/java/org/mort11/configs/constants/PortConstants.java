@@ -50,4 +50,7 @@ public final class PortConstants {
     public static final class Turret {
         public static final int TURRET_MOTOR = 11;
     }
+    public static final class Climber{
+        public static final int CLIMBER_MOTOR = 19;
+    }
 }

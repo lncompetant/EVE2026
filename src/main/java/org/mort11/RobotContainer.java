@@ -13,14 +13,12 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import org.mort11.commands.actions.endeffector.manual.moveFeeder;
 import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
@@ -29,13 +27,12 @@ import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.shoot;
+import org.mort11.commands.actions.endeffector.manual.MoveTurret;
+import org.mort11.commands.actions.endeffector.manual.MoveClimber;
 
-import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
-import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
 import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 // import org.mort11.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import org.mort11.commands.autons.apriltag.LimelightTest;
-import org.mort11.commands.autons.pathplanner.BasicCommands;
 import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
@@ -44,20 +41,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.mort11.commands.actions.endeffector.manual.MoveTurret;
-import org.mort11.commands.actions.endeffector.manual.moveFeeder;
-import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
-import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
-import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
-import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 
-import org.mort11.commands.autons.apriltag.Angle2AprilTag;
-import org.mort11.commands.autons.apriltag.LimelightTest;
-import org.mort11.commands.autons.pathplanner.BasicCommands;
-import org.mort11.commands.autons.timed.Taxi;
-import org.mort11.configs.constants.TunerConstants;
-import org.mort11.subsystems.CommandSwerveDrivetrain;
-import org.mort11.subsystems.Vision;
+
+
 
 import static org.mort11.configs.constants.PortConstants.Controller.*;
 import static org.mort11.configs.constants.PhysicalConstants.*;
@@ -139,6 +125,7 @@ public class RobotContainer {
             driveController.square().whileTrue(new Angle2AprilTag(0));
 
             //Subsystem commands for the endeffector, binded to the operator controller
+            //Intake Arms
             new Trigger(() -> manualController.getLeftY() > DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
             new Trigger(() -> manualController.getLeftY() < -DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
 
@@ -149,13 +136,6 @@ public class RobotContainer {
             manualController.x().whileTrue(new moveLeftRoller(0.5));
             manualController.b().whileTrue(new moveRightRoller(0.5));
 
-            //Intake
-            manualController.leftBumper().whileTrue(new moveLeftIntake(0.5));
-            manualController.leftTrigger().whileTrue(new moveLeftIntake(-0.5));
-
-            manualController.rightBumper().whileTrue(new moveRightIntake(0.5));
-            manualController.rightTrigger().whileTrue(new moveRightIntake(-0.5));
-            
 
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
@@ -165,8 +145,14 @@ public class RobotContainer {
             manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
 
+            //Shooter
             manualController.y().whileTrue(new shoot(0.5));
             manualController.a().whileTrue(new moveHood(0.5));
+
+            //Climber
+            manualController.leftBumper().whileTrue(new MoveClimber(0.5));
+            manualController.rightBumper().whileTrue(new MoveClimber(-0.5));
+            
 
         }
         
