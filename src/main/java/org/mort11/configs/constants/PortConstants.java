@@ -23,6 +23,10 @@ public final class PortConstants {
 
     }
 
+    public static final class Climber {
+        public static final int sparkClimber = 19;
+    }
+
     public static final class IntakeArmRight {        
         public static final int sparkIntakeRight = 15;
     }

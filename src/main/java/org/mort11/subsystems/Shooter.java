@@ -65,8 +65,8 @@ public class Shooter extends SubsystemBase {
         shooterFollowerB.set(percent);
     }
 
-    public void setAdvancedShooterSpeed(double rpm) {
-        
+    public void setAdvancedShooterSpeed(double rpm) {    
+
     }
 
     public double getDistanceToHub() {

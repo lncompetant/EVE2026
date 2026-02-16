@@ -43,6 +43,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.mort11.commands.actions.endeffector.manual.Climb;
 import org.mort11.commands.actions.endeffector.manual.MoveTurret;
 import org.mort11.commands.actions.endeffector.manual.moveFeeder;
 import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
@@ -165,8 +166,8 @@ public class RobotContainer {
             manualController.y().onTrue(setIntakeRight.up());
 
             //Manual shooting
-            new Trigger(() -> manualController.getLeftTriggerAxis() > 0.05).whileTrue(new Shoot(1));
-            new Trigger(() -> manualController.getRightTriggerAxis() > 0.05).whileTrue(new Shoot(-1));
+            new Trigger(() -> manualController.getLeftTriggerAxis() > DEAD_BAND).whileTrue(new Shoot(-1));
+            new Trigger(() -> manualController.getRightTriggerAxis() > DEAD_BAND).whileTrue(new Shoot(1));
             
             //set Hood
             manualController.leftStick().onTrue(new setHood(45)); //up
@@ -175,6 +176,12 @@ public class RobotContainer {
             //manual hood control
             new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
             new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
+
+            // climber controller
+            new Trigger(() -> manualController.getRightX() > DEAD_BAND).onTrue(new Climb(0.5));
+            new Trigger(() -> manualController.getRightX() < -DEAD_BAND).onTrue(new Climb(-0.5));
+
+
         }
         
         public Command getPathPlannerCommand(){
