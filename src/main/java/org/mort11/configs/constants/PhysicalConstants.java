@@ -67,7 +67,7 @@ public final class PhysicalConstants {
 
 	public static final class Turret {
 		//speeds
-		public static final double MANUAL_SPEED = 0.3;
+		public static final double MANUAL_SPEED = 0.15;
 
 		//positions and ratios
         public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1.0 / 15.0) * (24.0 / 150.0);

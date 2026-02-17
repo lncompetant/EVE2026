@@ -18,21 +18,10 @@ public final class PortConstants {
         public static final int sparkFeeder = 10;
     }
 
-    public static final class IntakeArmLeft {
-        public static final int sparkIntakeLeft = 17;
+  
 
-    }
-
-    public static final class IntakeArmRight {        
-        public static final int sparkIntakeRight = 15;
-    }
-
-    public static final class IntakeRollerLeft {
-        public static final int sparkRollLeft = 13;
-    }
-
-    public static final class IntakeRollerRight {
-        public static final int sparkRollRight = 14;
+    public static final class Turret {
+        public static final int TURRET_MOTOR = 60;
     }
 
     public static final class Shooter {
@@ -41,16 +30,33 @@ public final class PortConstants {
         public static final int talonFXShooterFollowerB = 14;
     }
 
+    public static final class IntakeArmRight {        
+        public static final int sparkIntakeRight = 15;
+    }
+
+    public static final class IntakeRollerRight {
+        public static final int sparkRollRight = 16;
+    }
+
+    public static final class IntakeArmLeft {
+        public static final int sparkIntakeLeft = 17;
+
+    }
+
+    public static final class IntakeRollerLeft {
+        public static final int sparkRollLeft = 18;
+    }
+
+    public static final class Climber{
+        public static final int CLIMBER_MOTOR = 19;
+    }
+
     public static final class Hood {
         public static final int servoHood = 41;
         public static final int servoHood2 = 42;
         public static final int canCoderHood = 40;
     }
 
-    public static final class Turret {
-        public static final int TURRET_MOTOR = 11;
-    }
-    public static final class Climber{
-        public static final int CLIMBER_MOTOR = 19;
-    }
+  
+    
 }

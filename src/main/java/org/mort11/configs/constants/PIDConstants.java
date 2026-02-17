@@ -43,7 +43,7 @@ public final class PIDConstants {
 		public final static double ROT_KI = 0;
 		public final static double ROT_KD = 0;
         //start slow, (180, 180), raise first number until it makes no change, then slowly increase second number, repeat
-		public final static Constraints ROT_CONSTRAINTS = new Constraints(90, 90); //start slow, (180, 180), raise first number until it makes no change, then slowly increase second number, repeat
+		public final static Constraints ROT_CONSTRAINTS = new Constraints(180, 180); //start slow, (180, 180), raise first number until it makes no change, then slowly increase second number, repeat
     }
 
     public static final class Shooter {

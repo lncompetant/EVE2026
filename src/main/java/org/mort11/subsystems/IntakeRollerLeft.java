@@ -29,7 +29,7 @@ public class IntakeRollerLeft extends SubsystemBase {
     public IntakeRollerLeft() {
         rollerMotor = new SparkMax(PortConstants.IntakeRollerLeft.sparkRollLeft, MotorType.kBrushless);
         rollerConfig = new SparkMaxConfig();
-
+ 
         rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 

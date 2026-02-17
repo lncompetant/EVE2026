@@ -126,27 +126,27 @@ public class RobotContainer {
 
             //Subsystem commands for the endeffector, binded to the operator controller
             //Intake Arms
-            new Trigger(() -> manualController.getLeftY() > DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
             new Trigger(() -> manualController.getLeftY() < -DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
+            new Trigger(() -> manualController.getLeftY() > DEAD_BAND).whileTrue(new moveLeftIntake(manualController));
 
-            new Trigger(() -> manualController.getRightY() > DEAD_BAND).whileTrue(new moveRightIntake(manualController));
-            new Trigger(() -> manualController.getRightY() < -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
+            new Trigger(() -> manualController.getRightY() > -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
+            new Trigger(() -> manualController.getRightY() < DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             
             //Intake Roller
-            manualController.x().whileTrue(new moveLeftRoller(0.5));
-            manualController.b().whileTrue(new moveRightRoller(0.5));
+            manualController.x().whileTrue(new moveLeftRoller(0.7));
+            manualController.b().whileTrue(new moveRightRoller(-0.7));
 
 
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
-            manualController.pov(180).whileTrue(new moveFeeder(-0.5));
+            manualController.pov(180).whileTrue(new moveFeeder(-1)); //moves the correct way
 
             //Turret
-            manualController.pov(90).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
-            manualController.pov(270).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
+            manualController.pov(90).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
+            manualController.pov(270).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
 
             //Shooter
-            manualController.y().whileTrue(new shoot(0.5));
+            manualController.y().whileTrue(new shoot(-1));
             manualController.a().whileTrue(new moveHood(0.5));
 
             //Climber
