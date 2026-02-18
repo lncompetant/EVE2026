@@ -165,8 +165,8 @@ public class Hood extends SubsystemBase {
 
     public void periodic() {
         getCancoderPosition(); // Update tracking of continuous position
-        SmartDashboard.putNumber("Hood Deg", getHoodPosDeg());
-        SmartDashboard.putNumber("Hood Cancoder Pos", getCancoderPosition());
+        // SmartDashboard.putNumber("Hood Deg", getHoodPosDeg());
+        // SmartDashboard.putNumber("Hood Cancoder Pos", getCancoderPosition());
     }
     
     public static Hood getInstance() {

@@ -76,6 +76,7 @@ public class EvanHood extends SubsystemBase {
 
         SmartDashboard.putNumber("Hood Pos Deg", getHoodPositionDeg());
         SmartDashboard.putNumber("Hood Speed Deg / sec", getHoodVelocityDeg());
+        SmartDashboard.putNumber("Servo Speed", getServoSpeed());
     }
 
     //takes in -1 to 1
@@ -102,7 +103,7 @@ public class EvanHood extends SubsystemBase {
 
     //may need 1 - 
     public double getAbsoluteEncoderPositionRotations() {
-        return hoodEncoder.getPosition().getValueAsDouble();
+        return 1 - hoodEncoder.getPosition().getValueAsDouble();
     }
 
     public double getHoodPositionDeg() {
@@ -112,6 +113,10 @@ public class EvanHood extends SubsystemBase {
 
     public double getHoodVelocityDeg() {
         return hoodEncoder.getVelocity().getValueAsDouble() * DEG_PER_ROTATION;
+    }
+
+    public double getServoSpeed(){
+        return servoSpeed;
     }
 
     public ProfiledPIDController getPIDController() {

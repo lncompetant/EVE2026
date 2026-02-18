@@ -25,9 +25,9 @@ import org.mort11.commands.actions.endeffector.manual.moveLeftIntake;
 import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
-import org.mort11.commands.actions.endeffector.manual.moveHood;
+// import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.shoot;
-import org.mort11.commands.actions.endeffector.pid.setHood;
+// import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
 import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
 import org.mort11.commands.actions.endeffector.manual.MoveTurret;
@@ -39,6 +39,7 @@ import org.mort11.commands.autons.apriltag.LimelightTest;
 import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
+import org.mort11.subsystems.EvanHood;
 import org.mort11.subsystems.Vision;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -159,7 +160,7 @@ public class RobotContainer {
 
             //Shooter
             manualController.y().whileTrue(new shoot(-1));
-            manualController.a().whileTrue(new moveHood(0.5));
+            // manualController.a().whileTrue(new moveHood(0.5));
 
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));
@@ -169,15 +170,15 @@ public class RobotContainer {
             //set Hood
             // manualController.leftStick().onTrue(new setHood(45)); //up
             // manualController.rightStick().onTrue(new setHood(80)); //down
-            manualController.leftStick().whileTrue(new MoveEvanHood(-0.5)); //up
-            manualController.rightStick().whileTrue(new MoveEvanHood(0.5)); //down
+            manualController.start().whileTrue(new MoveEvanHood(-1)); //up
+            manualController.back().whileTrue(new MoveEvanHood(1)); //down
 
             //manual hood control dont change is supposed to be weird
-            new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
-            new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
+            // new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
+            // new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
 
-            new Trigger(() -> manualController.getRightX() > DEAD_BAND).onTrue(new Climb(1)); 
-            new Trigger(() -> manualController.getRightX() < -DEAD_BAND).onTrue(new Climb(-1));
+            // new Trigger(() -> manualController.getRightX() > DEAD_BAND).onTrue(new Climb(1)); 
+            // new Trigger(() -> manualController.getRightX() < -DEAD_BAND).onTrue(new Climb(-1));
         }
         
         public Command getPathPlannerCommand(){

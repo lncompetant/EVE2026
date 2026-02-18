@@ -54,9 +54,9 @@ public final class PhysicalConstants {
 		public static final double DEG_PER_ROTATION = (80 - 45) / 1.9;
 		//The maximum inch displacement for every 0.02 sec cycle	
 		public static final double MAXIMUM_DEG_CHANGE = 5;
-		public static final double HOOD_DEG_OFFSET = 0;
+		public static final double HOOD_DEG_OFFSET = 90;
 
-		public static final double HOOD_START_HEIGHT = 0;
+		public static final double HOOD_START_HEIGHT = 80;
 
 		public static final int MIN_PULSE_WIDTH_SERVO = 500;
 		public static final int MIDDLE_PULSE_WIDTH_SERVO = 1500;
@@ -85,7 +85,7 @@ public final class PhysicalConstants {
 		public static final double MANUAL_SPEED = 0.15;
 
 		//positions and ratios
-        public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1.0 / 15.0) * (24.0 / 150.0);
+        public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1.0 / 15.0) * (24.0 / 150.0) * 360;
 		public static final double STARTING_POSITION_DEG = 0;
     }
 

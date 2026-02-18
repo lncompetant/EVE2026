@@ -36,7 +36,6 @@ public final class PortConstants {
         public static final Bank SERVOBANKS = ServoHub.Bank.kBank3_5;
     }
 
-  
 
     public static final class Turret {
         public static final int TURRET_MOTOR = 60;
