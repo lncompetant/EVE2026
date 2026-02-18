@@ -55,12 +55,12 @@ public class Hood extends SubsystemBase {
 
         hoodConfig = new ServoHubConfig();
         hoodConfig
-        .channel0.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
+        .channel3.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         hoodConfig2 = new ServoHubConfig();
         hoodConfig2
-        .channel1.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
+        .channel4.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         hoodServo.configure(hoodConfig, ResetMode.kResetSafeParameters);
