@@ -49,6 +49,15 @@ public final class PhysicalConstants {
 
     }
 
+	public static final class Hood {
+		// (deg max - deg min) / gear ratio
+		public static final double DEG_PER_ENCODER_ROTATION = (80-45) / 1.9;
+
+		public static final double MIN_PULSE_WIDTH_SERVO = 500;
+		public static final double MIDDLE_PULSE_WIDTH_SERVO = 1500;
+		public static final double MAX_PULSE_WIDTH_SERVO = 2500;
+	}
+
     public static final class IntakeArmLeft {
 
     }

@@ -25,8 +25,22 @@ public class Climber extends SubsystemBase {
         climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Climber Pos Motor Rotations", getMotorRotationPosition());
+        SmartDashboard.putNumber("Climber Motor Speed RPM", getMotorRotationRPM());
+    }
+
     public void setSpeed(double speed){
         climbMotor.set(speed);
+    }
+
+    public double getMotorRotationPosition() {
+        return climbMotor.getEncoder().getPosition();
+    }
+
+    public double getMotorRotationRPM() {
+        return climbMotor.getEncoder().getVelocity();
     }
 
     public static Climber getInstance(){

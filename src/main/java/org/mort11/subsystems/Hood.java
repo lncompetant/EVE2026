@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.mort11.configs.constants.PortConstants;
+import static org.mort11.configs.constants.PhysicalConstants.Hood.*;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -28,7 +29,6 @@ public class Hood extends SubsystemBase {
     public double currenthoodPosDegrees;
     public PIDController pidController = new PIDController(0.1, 0, 0);
     public double pidEffort;
-    private static final double ROTATIONS_TO_HOOD_DEG = (80-45) / 1.9;
 
 
     //Estimate, temporarily using this as a placeholder
@@ -55,12 +55,12 @@ public class Hood extends SubsystemBase {
 
         hoodConfig = new ServoHubConfig();
         hoodConfig
-        .channel0.pulseRange(500, 1500, 2500)
+        .channel0.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         hoodConfig2 = new ServoHubConfig();
         hoodConfig2
-        .channel1.pulseRange(500, 1500, 2500)
+        .channel1.pulseRange(MIN_PULSE_WIDTH_SERVO, MIDDLE_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         hoodServo.configure(hoodConfig, ResetMode.kResetSafeParameters);
@@ -122,7 +122,7 @@ public class Hood extends SubsystemBase {
     }
 
     public double getHoodPosDeg() {
-        return getCancoderPosition() * ROTATIONS_TO_HOOD_DEG;
+        return getCancoderPosition() * DEG_PER_ENCODER_ROTATION;
     }
 
 

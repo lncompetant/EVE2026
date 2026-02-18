@@ -40,12 +40,18 @@ public class IntakeArmRight extends SubsystemBase{
         // positionController.setTolerance(0.01);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Intake Arm Right Pos Motor Rotations", getMotorRotationPosition());
+        SmartDashboard.putNumber("Intake Arm Right Speed RPM", getMotorRotationRPM());
+    }
+
     public void setSpeed(double speed){
         intakeMotor.set(speed);
     }
 
     public void periodic() {
-        SmartDashboard.putNumber("IntakeArmRightPos", getPosition());
+        SmartDashboard.putNumber("Intake Arm Left Right Motor Rotations", getMotorRotationPosition());
     }
     
     public void setSetpoint(double setpoint){
@@ -66,6 +72,14 @@ public class IntakeArmRight extends SubsystemBase{
 
     public void setMotorPercent(double motorSpeed){
         this.motorSpeed=motorSpeed+KG;
+    }
+
+    public double getMotorRotationPosition() {
+        return intakeMotor.getEncoder().getPosition();
+    }
+
+    public double getMotorRotationRPM() {
+        return intakeMotor.getEncoder().getVelocity();
     }
 
     public static IntakeArmRight getInstance(){

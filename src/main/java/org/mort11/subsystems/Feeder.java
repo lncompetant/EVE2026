@@ -23,8 +23,22 @@ public class Feeder extends SubsystemBase {
         feedMotor.configure(feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Feeder Pos Motor Rotations", getMotorRotationPosition());
+        SmartDashboard.putNumber("Feeder Motor Speed RPM", getMotorRotationRPM());
+    }
+
     public void setSpeed(double speed){
         feedMotor.set(speed);
+    }
+
+    public double getMotorRotationPosition() {
+        return feedMotor.getEncoder().getPosition();
+    }
+
+    public double getMotorRotationRPM() {
+        return feedMotor.getEncoder().getVelocity();
     }
 
     public static Feeder getInstance(){

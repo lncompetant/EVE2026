@@ -39,20 +39,21 @@ public class IntakeArmLeft extends SubsystemBase{
         // positionController.setTolerance(0.01);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Intake Arm Left Motor Rotations", getMotorRotationPosition());
+    }
+
     public void setSpeed(double speed){
         intakeMotor.set(speed);
     }
     
     public void periodic() {
-        SmartDashboard.putNumber("IntakeArmLeftPos", getPosition());
+        SmartDashboard.putNumber("IntakeArmLeftPos", getMotorRotationPosition());
     }
     
     public void setSetpoint(double setpoint){
         this.setpoint = setpoint;
-    }
-
-    public double getPosition(){
-        return intakeMotor.getEncoder().getPosition();
     }
     
     public ProfiledPIDController getPIDController(){
@@ -65,6 +66,14 @@ public class IntakeArmLeft extends SubsystemBase{
 
     public void setMotorPercent(double motorSpeed){
         this.motorSpeed=motorSpeed+KG;
+    }
+
+    public double getMotorRotationPosition() {
+        return intakeMotor.getEncoder().getPosition();
+    }
+
+    public double getMotorRotationRPM() {
+        return intakeMotor.getEncoder().getVelocity();
     }
 
     public static IntakeArmLeft getInstance(){

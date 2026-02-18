@@ -52,6 +52,11 @@ public class Shooter extends SubsystemBase {
         // Probably need to indiviual set control modes for the followers
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Shooter Speed RPM", getShooterRPM());
+    }
+
     public void setShooterSpeed(double speed) {
         velocityRequest.withVelocity(speed);
         shooterLeader.setControl(velocityRequest);
@@ -77,12 +82,12 @@ public class Shooter extends SubsystemBase {
         return 0.0;
     }
 
-    public double getShooterSpeed() {
+    public double getShooterSpeedRPS() {
         return shooterLeader.getVelocity().getValueAsDouble();
     }
 
     public double getShooterRPM() {
-        return shooterLeader.getVelocity().getValueAsDouble() * 60.0;
+        return getShooterSpeedRPS() * 60.0;
     }
 
 

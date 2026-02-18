@@ -42,7 +42,9 @@ public class Turret extends SubsystemBase {
     @Override
     public void periodic() {
         motor.setVoltage(motorSpeed * ROBOT_VOLTAGE);
+
         SmartDashboard.putNumber("TurretDeg", getTurretPosDeg());
+        SmartDashboard.putNumber("Turret Vel Deg", getTurretVelDeg());
     }
 
     public void setTurretMotorPercent(double motorSpeed) {
