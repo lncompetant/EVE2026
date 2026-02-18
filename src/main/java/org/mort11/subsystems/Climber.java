@@ -14,24 +14,25 @@ import org.mort11.configs.constants.PortConstants;
 
 public class Climber extends SubsystemBase {
     private static Climber climber;
-    private SparkMax climberMotor;
-    private SparkMaxConfig climberConfig;
+    private SparkMax climbMotor;
+    private SparkMaxConfig climbConfig;
+    private double motorSpeed = 0;
 
     public Climber() {
-        climberMotor = new SparkMax(PortConstants.Climber.CLIMBER_MOTOR, MotorType.kBrushless);
-        climberConfig = new SparkMaxConfig();
+        climbMotor = new SparkMax(PortConstants.Climber.CLIMBER_MOTOR, MotorType.kBrushless);
+        climbConfig = new SparkMaxConfig();
 
-        climberMotor.configure(climberConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void setSpeed(double speed){
-        climberMotor.set(speed);
+        climbMotor.set(speed);
     }
 
-    public static Climber getInstance() {
-        if (climber == null) {
+    public static Climber getInstance(){
+        if (climber == null){
             climber = new Climber();
         }
         return climber;
-    }    
+    }
 }
