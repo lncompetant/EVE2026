@@ -70,8 +70,8 @@ public class Hood extends SubsystemBase {
     }
 
     public void setHoodPosition(double targetDeg) {
-    ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId0);
-    ServoChannel channel1 = hoodServo2.getServoChannel(ChannelId.kChannelId1);
+    ServoChannel channel0 = hoodServo.getServoChannel(ChannelId.kChannelId3);
+    ServoChannel channel1 = hoodServo2.getServoChannel(ChannelId.kChannelId4);
 
     channel0.setPowered(true);
     channel0.setEnabled(true);
@@ -122,7 +122,7 @@ public class Hood extends SubsystemBase {
     }
 
     public double getHoodPosDeg() {
-        return getCancoderPosition() * DEG_PER_ENCODER_ROTATION;
+        return getCancoderPosition() * DEG_PER_ROTATION;
     }
 
 

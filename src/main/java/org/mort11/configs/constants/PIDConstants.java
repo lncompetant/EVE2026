@@ -31,6 +31,18 @@ public final class PIDConstants {
 
     }
 
+    public static final class Hood {
+
+		//PID Rotational
+		public final static double ROT_KP = 0.05;
+		public final static double ROT_KI = 0;
+		public final static double ROT_KD = 0;
+
+		public final static Constraints ROT_CONSTRAINTS = new Constraints(1, 1000);
+
+        public final static double ROT_TOLERANCE = 0.5;
+    }
+
     public static final class Turret {
         //all units deg - deg/sec ...
         //FeedForward

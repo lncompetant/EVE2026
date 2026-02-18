@@ -1,5 +1,9 @@
 package org.mort11.configs.constants;
 
+import com.revrobotics.servohub.ServoChannel.ChannelId;
+import com.revrobotics.servohub.ServoHub;
+import com.revrobotics.servohub.ServoHub.Bank;
+
 public final class PortConstants {
 
     public static final class Controller {
@@ -16,6 +20,20 @@ public final class PortConstants {
 
     public static final class Feeder {
         public static final int sparkFeeder = 10;
+    }
+
+    public static final class Hood {
+        public static final int servoHood = 41;
+        public static final int servoHood2 = 42;
+        public static final int canCoderHood = 40;
+
+        public static final int SERVO_HUB = 41;
+        public static final int HOOD_CANCODER = 40;
+
+        public static final ChannelId SERVO_CHANNEL1 = ChannelId.kChannelId3;
+        public static final ChannelId SERVO_CHANNEL2 = ChannelId.kChannelId4;
+
+        public static final Bank SERVOBANKS = ServoHub.Bank.kBank3_5;
     }
 
   
@@ -50,13 +68,4 @@ public final class PortConstants {
     public static final class Climber{
         public static final int CLIMBER_MOTOR = 19;
     }
-
-    public static final class Hood {
-        public static final int servoHood = 41;
-        public static final int servoHood2 = 42;
-        public static final int canCoderHood = 40;
-    }
-
-  
-    
 }

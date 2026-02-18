@@ -49,10 +49,6 @@ public class IntakeArmRight extends SubsystemBase{
     public void setSpeed(double speed){
         intakeMotor.set(speed);
     }
-
-    public void periodic() {
-        SmartDashboard.putNumber("Intake Arm Left Right Motor Rotations", getMotorRotationPosition());
-    }
     
     public void setSetpoint(double setpoint){
         this.setpoint = setpoint;

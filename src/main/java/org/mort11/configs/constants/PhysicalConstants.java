@@ -51,11 +51,17 @@ public final class PhysicalConstants {
 
 	public static final class Hood {
 		// (deg max - deg min) / gear ratio
-		public static final double DEG_PER_ENCODER_ROTATION = (80-45) / 1.9;
+		public static final double DEG_PER_ROTATION = (80 - 45) / 1.9;
+		//The maximum inch displacement for every 0.02 sec cycle	
+		public static final double MAXIMUM_DEG_CHANGE = 5;
+		public static final double HOOD_DEG_OFFSET = 0;
 
-		public static final double MIN_PULSE_WIDTH_SERVO = 500;
-		public static final double MIDDLE_PULSE_WIDTH_SERVO = 1500;
-		public static final double MAX_PULSE_WIDTH_SERVO = 2500;
+		public static final double HOOD_START_HEIGHT = 0;
+
+		public static final int MIN_PULSE_WIDTH_SERVO = 500;
+		public static final int MIDDLE_PULSE_WIDTH_SERVO = 1500;
+		public static final int MAX_PULSE_WIDTH_SERVO = 2500;
+		public static final int PULSE_PERIOD_WIDTH_SERVO = 20000;
 	}
 
     public static final class IntakeArmLeft {
