@@ -159,7 +159,7 @@ public class RobotContainer {
             manualController.pov(270).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
 
             //Shooter
-            manualController.y().whileTrue(new shoot(-1));
+            manualController.y().whileTrue(new shoot(-0.5));
             // manualController.a().whileTrue(new moveHood(0.5));
 
             //Climber

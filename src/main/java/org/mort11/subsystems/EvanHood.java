@@ -70,7 +70,7 @@ public class EvanHood extends SubsystemBase {
     @Override
     public void periodic() {
         servoChannel1.setPulseWidth((int) LookUpTable.limitedMap(servoSpeed, -1, 1, MIN_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO));
-        servoChannel1.setPulseWidth((int) LookUpTable.limitedMap(-servoSpeed, -1, 1, MIN_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO));
+        servoChannel2.setPulseWidth((int) LookUpTable.limitedMap(-servoSpeed, -1, 1, MIN_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO));
 
         hoodPosition = calculateHoodPosition();
 
