@@ -10,6 +10,7 @@ public final class PortConstants {
         public static final int DRIVE_CONTROLLER = 0;
         public static final int ENDEFFECTOR_CONTROLLER = 1;
         public static final int MANUAL_CONTROLLER = 2;
+        public static final int OPERATOR_CONTROLLER = 3;
 
         public static final double DEAD_BAND = 0.05;
   }

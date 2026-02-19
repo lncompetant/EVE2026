@@ -51,6 +51,18 @@ public class Turret extends SubsystemBase {
         this.motorSpeed = motorSpeed + feedforward.calculate(getTurretVelDeg());
     }
 
+    public void setTurretPosDeg(double targetDeg){
+        targetDeg = Math.max(TURRET_MIN_ANGLE, Math.min(TURRET_MAX_ANGLE, targetDeg));
+        double pidOutput = controller.calculate(getTurretPosDeg(), targetDeg);
+        double ffOutput = feedforward.calculate(controller.getSetpoint().velocity);
+        motor.setVoltage(pidOutput + ffOutput);
+    }
+
+
+    // public boolean goalReached(){
+    //     return controller.atGoal();
+    // }
+
     public double getTurretPosDeg() {
         return getMotorRotationPosition() * MOTOR_ROTATIONS_TO_TURRET_DEG + STARTING_POSITION_DEG;
     }

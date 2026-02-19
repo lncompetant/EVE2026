@@ -39,11 +39,13 @@ import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 // import org.mort11.commands.autons.BasicCommands; commented out for now bc pathplanner errors
 import org.mort11.commands.autons.apriltag.LimelightTest;
 import org.mort11.commands.autons.timed.Taxi;
+import org.mort11.configs.constants.PhysicalConstants.Turret;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
 import org.mort11.subsystems.EvanHood;
 import org.mort11.subsystems.Vision;
 import com.pathplanner.lib.path.PathPlannerPath;
+
 
 import static edu.wpi.first.units.Units.*;
 
@@ -70,6 +72,7 @@ public class RobotContainer {
     private final CommandPS5Controller driveController = new CommandPS5Controller(DRIVE_CONTROLLER);
     private final CommandXboxController endeffectorController = new CommandXboxController(ENDEFFECTOR_CONTROLLER);
     private final CommandXboxController manualController = new CommandXboxController(MANUAL_CONTROLLER);
+    private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER);
 
     
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -168,6 +171,7 @@ public class RobotContainer {
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));
             manualController.rightBumper().whileTrue(new Climb(-0.5));
+            
 
             
             //set Hood
@@ -176,6 +180,10 @@ public class RobotContainer {
             manualController.start().whileTrue(new MoveEvanHood(-1)); //up
             manualController.back().whileTrue(new MoveEvanHood(1)); //down
             endeffectorController.start().onTrue(new SetEvanHood(60));
+
+            // Test PID to 90 degrees while held, returns to 0 when released
+        
+
 
             //manual hood control dont change is supposed to be weird
             // new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
