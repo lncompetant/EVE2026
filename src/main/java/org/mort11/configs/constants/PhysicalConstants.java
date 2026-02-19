@@ -93,6 +93,6 @@ public final class PhysicalConstants {
     }
 
     public static final class Shooter {
-		public static final double MAX_SHOOTER_RPM = 7530;
+		public static final double MAX_SHOOTER_RPM = 7758;
     }
 }

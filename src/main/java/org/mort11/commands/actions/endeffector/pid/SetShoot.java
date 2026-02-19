@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.mort11.subsystems.Shooter;
 
-public class PercentShoot extends Command {
+public class SetShoot extends Command {
     private final Shooter shooter;
-    private double percent;
+    private double RPM;
 
-        public PercentShoot(double percent) {
+        public SetShoot(double RPM) {
             shooter = Shooter.getInstance();
-            this.percent = percent;
+            this.RPM = RPM;
             addRequirements(shooter);
         }
     
@@ -21,12 +21,12 @@ public class PercentShoot extends Command {
 
     @Override
     public void execute() {
-        shooter.setShooterPercent(percent);
+        shooter.setShooterRPM(RPM);
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooter.setShooterPercent(0);
+        shooter.setShooterRPM(0);
     }
 
     @Override

@@ -61,7 +61,11 @@ public final class PIDConstants {
 
     public static final class Shooter {
         public final static double RPM_KS = 0;
-		public final static double RPM_KV = 0;
+		public final static double RPM_KV = 0.00029;
 		public final static double RPM_KA = 0;
+
+        public final static double RPM_CHANGE_PER_SEC = 1000;
+
+        public static final double SLEW_RATE_LIMIT = RPM_CHANGE_PER_SEC / PhysicalConstants.Shooter.MAX_SHOOTER_RPM;
     }
 }

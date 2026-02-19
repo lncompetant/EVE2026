@@ -2,6 +2,7 @@ package org.mort11.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,6 +27,7 @@ public class Shooter extends SubsystemBase {
     private final TalonFX shooterFollowerB;
 
     private SimpleMotorFeedforward feedforward;
+    private SlewRateLimiter slewLimiter;
 
     // private final VelocityVoltage velocityRequest =
     //     new VelocityVoltage(0).withSlot(0);
@@ -53,14 +55,18 @@ public class Shooter extends SubsystemBase {
         shooterFollowerB.setControl(new Follower(SHOOTER_LEADER, MotorAlignmentValue.Opposed));
 
         feedforward = new SimpleMotorFeedforward(RPM_KS, RPM_KV, RPM_KA);
+        slewLimiter = new SlewRateLimiter(SLEW_RATE_LIMIT);
     }
 
     @Override
     public void periodic() {
-        shooterLeader.setVoltage(shooterSpeed * ROBOT_VOLTAGE);
-        // shooterLeader.setVoltage(shooterSpeed * ROBOT_VOLTAGE + feedforward.calculate(getShooterRPM()));
+        shooterLeader.setVoltage(slewLimitedSpeed(shooterSpeed) * ROBOT_VOLTAGE);
 
         SmartDashboard.putNumber("Shooter Speed RPM", getShooterRPM());
+    }
+
+    public double slewLimitedSpeed(double shooterSpeed) {
+        return slewLimiter.calculate(shooterSpeed);
     }
 
     // public void setShooterSpeed(double speed) {
