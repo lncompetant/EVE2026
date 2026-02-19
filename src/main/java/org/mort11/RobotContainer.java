@@ -204,8 +204,8 @@ public class RobotContainer {
                 DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 return Commands.none();
             }
-  
         }
+        
         public Command getAutonomousCommand() {
             // Simple drive forward auton
             return autoChooser.getSelected();
