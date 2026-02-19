@@ -28,6 +28,7 @@ import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 // import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.PercentShoot;
 import org.mort11.commands.actions.endeffector.pid.SetEvanHood;
+import org.mort11.commands.actions.endeffector.pid.SetTurret;
 // import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
 import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
@@ -158,6 +159,7 @@ public class RobotContainer {
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
+            endeffectorController.a().whileTrue(new SetTurret(45));
 
             //Shooter
             manualController.y().whileTrue(new PercentShoot(-0.25));
