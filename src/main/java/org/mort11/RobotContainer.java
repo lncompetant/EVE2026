@@ -166,8 +166,8 @@ public class RobotContainer {
             endeffectorController.a().whileTrue(new SetTurret(45));
 
             //Shooter
-            manualController.y().whileTrue(new PercentShoot(-0.25));
-            endeffectorController.y().whileTrue(new SetShoot(2000));
+            manualController.y().whileTrue(new PercentShoot(0.25));
+            endeffectorController.y().whileTrue(new SetShoot(3000));
 
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));
