@@ -23,7 +23,7 @@ public class SetEvanHood extends Command {
     @Override
     public void execute() {
         hood.setHoodSpeed(
-            hood.getPIDController().calculate(
+            -hood.getPIDController().calculate(
                 hood.getHoodPositionDeg(), 
                 targetPositionDeg
             )
@@ -32,7 +32,7 @@ public class SetEvanHood extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return hood.getPIDController().atGoal();
     }
 
     @Override

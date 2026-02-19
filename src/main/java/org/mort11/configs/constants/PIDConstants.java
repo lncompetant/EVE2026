@@ -34,13 +34,14 @@ public final class PIDConstants {
     public static final class Hood {
 
 		//PID Rotational
-		public final static double ROT_KP = 0.05;
+		public final static double ROT_KP = 0.25;
 		public final static double ROT_KI = 0;
-		public final static double ROT_KD = 0;
+		public final static double ROT_KD = 0.01; // try 0.1, 0.15, 0.2
 
-		public final static Constraints ROT_CONSTRAINTS = new Constraints(1, 1000);
+		public final static Constraints ROT_CONSTRAINTS = new Constraints(1000, 100);
 
-        public final static double ROT_TOLERANCE = 0.5;
+        public final static double ROT_TOLERANCE = 0.1;
+        public final static double ROT_SPEED_TOLERANCE = 2;
     }
 
     public static final class Turret {
@@ -59,6 +60,8 @@ public final class PIDConstants {
     }
 
     public static final class Shooter {
-
+        public final static double RPM_KS = 0;
+		public final static double RPM_KV = 0;
+		public final static double RPM_KA = 0;
     }
 }

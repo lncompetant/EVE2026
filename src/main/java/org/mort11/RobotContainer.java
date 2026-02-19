@@ -26,7 +26,8 @@ import org.mort11.commands.actions.endeffector.manual.moveLeftRoller;
 import org.mort11.commands.actions.endeffector.manual.moveRightIntake;
 import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 // import org.mort11.commands.actions.endeffector.manual.moveHood;
-import org.mort11.commands.actions.endeffector.manual.shoot;
+import org.mort11.commands.actions.endeffector.manual.PercentShoot;
+import org.mort11.commands.actions.endeffector.pid.SetEvanHood;
 // import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
 import org.mort11.commands.actions.endeffector.pid.setIntakeRight;
@@ -159,7 +160,7 @@ public class RobotContainer {
             manualController.pov(270).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
 
             //Shooter
-            manualController.y().whileTrue(new shoot(-0.5));
+            manualController.y().whileTrue(new PercentShoot(-0.25));
             // manualController.a().whileTrue(new moveHood(0.5));
 
             //Climber
@@ -172,6 +173,7 @@ public class RobotContainer {
             // manualController.rightStick().onTrue(new setHood(80)); //down
             manualController.start().whileTrue(new MoveEvanHood(-1)); //up
             manualController.back().whileTrue(new MoveEvanHood(1)); //down
+            endeffectorController.start().onTrue(new SetEvanHood(60));
 
             //manual hood control dont change is supposed to be weird
             // new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive

@@ -42,9 +42,9 @@ public final class PortConstants {
     }
 
     public static final class Shooter {
-        public static final int talonFXShooterLeader = 12;
-        public static final int talonFXShooterFollowerA = 13;
-        public static final int talonFXShooterFollowerB = 14;
+        public static final int SHOOTER_LEADER = 12;
+        public static final int SHOOTER_FOLLOWER_A = 13;
+        public static final int SHOOTER_FOLLOWER_B = 14;
     }
 
     public static final class IntakeArmRight {        
