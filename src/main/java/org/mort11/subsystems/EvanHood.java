@@ -37,6 +37,8 @@ public class EvanHood extends SubsystemBase {
         hoodEncoder = new CANcoder(HOOD_CANCODER);
         hoodEncoderconfig = new CANcoderConfiguration();
 
+        hoodEncoder.getConfigurator().apply(hoodEncoderconfig);
+
         servoHub = new ServoHub(SERVO_HUB);
         servoHubConfig = new ServoHubConfig();
 
@@ -64,7 +66,7 @@ public class EvanHood extends SubsystemBase {
         rotationsCompleted = HOOD_DEG_OFFSET / DEG_PER_ROTATION;
 
         controller = new ProfiledPIDController(ROT_KP, ROT_KI, ROT_KD, ROT_CONSTRAINTS);
-        controller.setTolerance(ROT_TOLERANCE);
+        controller.setTolerance(ROT_TOLERANCE, ROT_SPEED_TOLERANCE);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class EvanHood extends SubsystemBase {
 
         SmartDashboard.putNumber("Hood Pos Deg", getHoodPositionDeg());
         SmartDashboard.putNumber("Hood Speed Deg / sec", getHoodVelocityDeg());
-        SmartDashboard.putNumber("Servo Speed", getServoSpeed());
+        SmartDashboard.putNumber("Servo Speed", LookUpTable.limitedMap(-servoSpeed, -1, 1, MIN_PULSE_WIDTH_SERVO, MAX_PULSE_WIDTH_SERVO));
     }
 
     //takes in -1 to 1
@@ -103,7 +105,7 @@ public class EvanHood extends SubsystemBase {
 
     //may need 1 - 
     public double getAbsoluteEncoderPositionRotations() {
-        return 1 - hoodEncoder.getPosition().getValueAsDouble();
+        return hoodEncoder.getPosition().getValueAsDouble();
     }
 
     public double getHoodPositionDeg() {

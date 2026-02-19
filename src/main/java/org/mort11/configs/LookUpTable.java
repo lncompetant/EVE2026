@@ -49,10 +49,7 @@ public class LookUpTable {
     }
 
     public static double limitedMap(double input, double minIn, double maxIn, double minOut, double maxOut) {
-        double inRange = maxIn - minIn;
-        double outRange = maxOut - minOut;
-        
-        return clamp(minOut, (((input - minIn) / inRange) * outRange) + minOut, maxOut);
+        return clamp(minOut, map(input, minIn, maxIn, minOut, maxOut), maxOut);
     }
 
     public static double clamp(double min, double data, double max) {
