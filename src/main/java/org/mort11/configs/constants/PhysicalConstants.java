@@ -8,10 +8,10 @@ public final class PhysicalConstants {
     public static final class CommandSwerveDrivetrain {
         // The left-to-right distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(22.75);
+		public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(20.75);
 		// The front-to-back distance between the drivetrain wheels measured from center
 		// to center.
-		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(20.75);
+		public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(22.75);
 
 		public static final double DRIVEBASE_RADIUS_METERS = Math.hypot(
 			DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0
@@ -87,6 +87,9 @@ public final class PhysicalConstants {
 		//positions and ratios
         public static final double MOTOR_ROTATIONS_TO_TURRET_DEG = (1.0 / 15.0) * (24.0 / 150.0) * 360;
 		public static final double STARTING_POSITION_DEG = 0;
+
+		public final static double TURRET_MIN_ANGLE = -135;
+		public final static double TURRET_MAX_ANGLE = 135;
     }
 
     public static final class Shooter {

@@ -285,6 +285,22 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         //     SmartDashboard.putNumber("Pose Heading (deg)",
         //     pose.getRotation().getDegrees());
         //     field.setRobotPose(pose);
+  
+    // ... existing code ...
+
+    // Display swerve module encoder angles
+    SwerveModule<TalonFX, TalonFX, CANcoder>[] modules = getModules();
+    String[] moduleNames = {"FrontLeft", "FrontRight", "BackLeft", "BackRight"};
+    
+ 
+
+
+    for (int i = 0; i < modules.length; i++) {
+        SmartDashboard.putNumber(
+             moduleNames[i] + " Raw Encoder (rot)",
+            modules[i].getEncoder().getAbsolutePosition().getValueAsDouble()
+             );
+            }
     }
     
 
