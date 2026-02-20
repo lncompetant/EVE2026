@@ -2,15 +2,24 @@ package org.mort11.commands.actions.endeffector.pid;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import java.util.function.DoubleSupplier;
+
 import org.mort11.subsystems.Turret;
 
 public class SetTurret extends Command {
     private Turret turret;
-    private double targetPositionDeg;
+    private DoubleSupplier targetPositionDeg;
+
+    public SetTurret(DoubleSupplier targetPositionDeg) {
+        this.turret = Turret.getInstance();
+        this.targetPositionDeg = targetPositionDeg;
+
+        addRequirements(turret);
+    }
 
     public SetTurret(double targetPositionDeg) {
         this.turret = Turret.getInstance();
-        this.targetPositionDeg = targetPositionDeg;
+        this.targetPositionDeg = () -> targetPositionDeg;
 
         addRequirements(turret);
     }
@@ -25,7 +34,7 @@ public class SetTurret extends Command {
         turret.setTurretMotorPercent(
             turret.getPIDController().calculate(
                 turret.getTurretPosDeg(), 
-                targetPositionDeg
+                targetPositionDeg.getAsDouble()
             )
         );
     }

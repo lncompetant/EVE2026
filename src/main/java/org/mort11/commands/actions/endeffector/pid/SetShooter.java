@@ -1,18 +1,28 @@
 package org.mort11.commands.actions.endeffector.pid;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import java.util.function.DoubleSupplier;
+
 import org.mort11.subsystems.Shooter;
 
-public class SetShoot extends Command {
+public class SetShooter extends Command {
     private final Shooter shooter;
-    private double RPM;
+    private DoubleSupplier RPM;
 
-        public SetShoot(double RPM) {
-            shooter = Shooter.getInstance();
-            this.RPM = RPM;
-            addRequirements(shooter);
-        }
+    public SetShooter(DoubleSupplier RPM) {
+        shooter = Shooter.getInstance();
+        this.RPM = RPM;
+
+        addRequirements(shooter);
+    }
+    
+    public SetShooter(double RPM) {
+        shooter = Shooter.getInstance();
+        this.RPM = () -> RPM;
+            
+        addRequirements(shooter);
+    }
     
     @Override
     public void initialize() {
@@ -21,7 +31,7 @@ public class SetShoot extends Command {
 
     @Override
     public void execute() {
-        shooter.setShooterRPM(RPM);
+        shooter.setShooterRPM(RPM.getAsDouble());
     }
 
     @Override

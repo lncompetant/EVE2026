@@ -70,7 +70,7 @@ public class Turret extends SubsystemBase {
     //deg / sec
     //converts to rotations / sec, then to deg / sec
     public double getTurretVelDeg() {
-        return (getMotorRotationRPM() / 60) * 360;
+        return ((getMotorRotationRPM() / 60) * MOTOR_ROTATIONS_TO_TURRET_DEG);
     }
 
     public double getMotorRotationPosition() {

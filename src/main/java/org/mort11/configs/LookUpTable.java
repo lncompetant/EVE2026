@@ -1,7 +1,11 @@
 package org.mort11.configs;
 
+import static org.mort11.configs.constants.LookUpTableConstants.*;
+
 public class LookUpTable {
     public double table[][];
+
+    private static final LookUpTable shooterSupersystemTable = new LookUpTable(SHOOTER_SUPERSYSTEM);
 
     public LookUpTable(double[][] table) {
         this.table = table;
@@ -10,11 +14,21 @@ public class LookUpTable {
     public double[] lowerBounds(double independent) {
         int currentSpot = 0;
 
+        System.out.println(independent);
+
+        // for(int i = 0; independent < table[i][0]; i++) {
+        //     System.out.println(independent);
+        //     currentSpot = i;
+        // }
+
         while(independent < table[currentSpot][0]) {
             currentSpot++;
         }
 
-        currentSpot--;
+        if (currentSpot > 0) {
+            currentSpot--;
+        }
+
         return table[currentSpot];
     }
 
@@ -54,5 +68,13 @@ public class LookUpTable {
 
     public static double clamp(double min, double data, double max) {
         return Math.max(Math.min(data, max), min);
+    }
+
+    public static double getNeededShooterRPM(double meters) {
+        return shooterSupersystemTable.linearInterpolation(meters)[1];
+    }
+
+    public static double getNeededHoodAngle(double meters) {
+        return shooterSupersystemTable.linearInterpolation(meters)[2];
     }
 }
