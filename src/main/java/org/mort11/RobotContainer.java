@@ -165,7 +165,7 @@ public class RobotContainer {
             endeffectorController.a().whileTrue(new SetTurret(45));
 
             //Shooter
-            manualController.y().whileTrue(new PercentShoot(-0.25));
+            manualController.y().whileTrue(new PercentShoot(0.25));
             // manualController.a().whileTrue(new moveHood(0.5));
 
             //Climber
@@ -183,8 +183,6 @@ public class RobotContainer {
 
             // Test PID to 90 degrees while held, returns to 0 when released
         
-
-
             //manual hood control dont change is supposed to be weird
             // new Trigger(() -> manualController.getLeftX() > DEAD_BAND).onTrue(new moveHood(-1)); //positive
             // new Trigger(() -> manualController.getLeftX() < -DEAD_BAND).onTrue(new moveHood(1)); //negative
