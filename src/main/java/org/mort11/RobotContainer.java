@@ -28,7 +28,8 @@ import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 // import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.PercentShoot;
 import org.mort11.commands.actions.endeffector.pid.SetEvanHood;
-import org.mort11.commands.actions.endeffector.pid.SetShoot;
+import org.mort11.commands.actions.endeffector.pid.SetShooter;
+import org.mort11.commands.actions.endeffector.pid.SetSuperShooter;
 import org.mort11.commands.actions.endeffector.pid.SetTurret;
 // import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
@@ -41,6 +42,7 @@ import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 import org.mort11.commands.autons.apriltag.LimelightTest;
 import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.PhysicalConstants.Turret;
+import org.mort11.configs.LookUpTable;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
 import org.mort11.subsystems.EvanHood;
@@ -159,6 +161,7 @@ public class RobotContainer {
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-1)); //moves the correct way
+            endeffectorController.rightTrigger(0.2).whileTrue(new moveFeeder(-1));
 
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
@@ -167,7 +170,13 @@ public class RobotContainer {
 
             //Shooter
             manualController.y().whileTrue(new PercentShoot(0.25));
-            endeffectorController.y().whileTrue(new SetShoot(3000));
+            endeffectorController.y().whileTrue(new SetShooter(1750));
+            // LookUpTable.getNeededHoodAngle(3);
+            endeffectorController.x().whileTrue(new SetSuperShooter(
+                () -> LookUpTable.getNeededShooterRPM(3), 
+                () -> 0, 
+                () -> LookUpTable.getNeededHoodAngle(3)
+            ));
 
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));

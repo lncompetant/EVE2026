@@ -2,15 +2,24 @@ package org.mort11.commands.actions.endeffector.pid;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import java.util.function.DoubleSupplier;
+
 import org.mort11.subsystems.EvanHood;
 
 public class SetEvanHood extends Command {
     private EvanHood hood;
-    private double targetPositionDeg;
+    private DoubleSupplier targetPositionDeg;
+
+    public SetEvanHood(DoubleSupplier targetPositionDeg) {
+        this.hood = EvanHood.getInstance();
+        this.targetPositionDeg = targetPositionDeg;
+
+        addRequirements(hood);
+    }
 
     public SetEvanHood(double targetPositionDeg) {
         this.hood = EvanHood.getInstance();
-        this.targetPositionDeg = targetPositionDeg;
+        this.targetPositionDeg = () -> targetPositionDeg;
 
         addRequirements(hood);
     }
@@ -25,7 +34,7 @@ public class SetEvanHood extends Command {
         hood.setHoodSpeed(
             -hood.getPIDController().calculate(
                 hood.getHoodPositionDeg(), 
-                targetPositionDeg
+                targetPositionDeg.getAsDouble()
             )
         );
     }

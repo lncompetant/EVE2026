@@ -48,8 +48,6 @@ public class Shooter extends SubsystemBase {
         shooterFollowerA.getConfigurator().apply(config);
         shooterFollowerB.getConfigurator().apply(config);
 
-        // shooter
-
         shooterFollowerA.setControl(new Follower(SHOOTER_LEADER, MotorAlignmentValue.Opposed));
         shooterFollowerB.setControl(new Follower(SHOOTER_LEADER, MotorAlignmentValue.Opposed));
 
@@ -79,16 +77,11 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterPercent(double percent) {
         shooterSpeed = percent;
-        // shooterLeader.set(percent);
-        // shooterFollowerA.set(percent);
-        // shooterFollowerB.set(percent);
     }
 
     public void setShooterRPM(double RPM) {
-        shooterSpeed = (RPM / MAX_SHOOTER_RPM) + (feedforward.calculate(RPM) / ROBOT_VOLTAGE);
-        // shooterLeader.set(percent);
-        // shooterFollowerA.set(percent);
-        // shooterFollowerB.set(percent);
+        shooterSpeed = (RPM / MAX_SHOOTER_RPM) + 
+        (feedforward.calculate(RPM) / ROBOT_VOLTAGE);
     }
 
     public double getShooterSpeedRPS() {
@@ -98,6 +91,7 @@ public class Shooter extends SubsystemBase {
     public double getShooterRPM() {
         return getShooterSpeedRPS() * 60.0;
     }
+
 
 
     public static Shooter getInstance(){

@@ -52,11 +52,10 @@ public final class PIDConstants {
 		public final static double ROT_KA = 0;
 
 		//PID Rotational
-		public final static double ROT_KP = 0.001; //0.2 from desginer Evan (i feel this could be right)
+		public final static double ROT_KP = 0.02;
 		public final static double ROT_KI = 0;
 		public final static double ROT_KD = 0;
-        //start slow, (180, 180), raise first number until it makes no change, then slowly increase second number, repeat
-		public final static Constraints ROT_CONSTRAINTS = new Constraints(10, 180); //start slow, (180, 180), raise first number until it makes no change, then slowly increase second number, repeat
+		public final static Constraints ROT_CONSTRAINTS = new Constraints(400, 800);
     }
 
     public static final class Shooter {
