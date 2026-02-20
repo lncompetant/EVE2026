@@ -28,6 +28,8 @@ import org.mort11.commands.actions.endeffector.manual.moveRightRoller;
 // import org.mort11.commands.actions.endeffector.manual.moveHood;
 import org.mort11.commands.actions.endeffector.manual.PercentShoot;
 import org.mort11.commands.actions.endeffector.pid.SetEvanHood;
+import org.mort11.commands.actions.endeffector.pid.SetShooter;
+import org.mort11.commands.actions.endeffector.pid.SetSuperShooter;
 import org.mort11.commands.actions.endeffector.pid.SetTurret;
 // import org.mort11.commands.actions.endeffector.pid.setHood;
 import org.mort11.commands.actions.endeffector.pid.setIntakeLeft;
@@ -40,6 +42,7 @@ import org.mort11.commands.autons.apriltag.Angle2AprilTag;
 import org.mort11.commands.autons.apriltag.LimelightTest;
 import org.mort11.commands.autons.timed.Taxi;
 import org.mort11.configs.constants.PhysicalConstants.Turret;
+import org.mort11.configs.LookUpTable;
 import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
 import org.mort11.subsystems.EvanHood;
@@ -140,46 +143,69 @@ public class RobotContainer {
 
             new Trigger(() -> manualController.getRightY() > -DEAD_BAND).whileTrue(new moveRightIntake(manualController));
             new Trigger(() -> manualController.getRightY() < DEAD_BAND).whileTrue(new moveRightIntake(manualController));
-            
+
+            endeffectorController.y().whileTrue(new moveRightIntake(-0.2));
+            endeffectorController.a().whileTrue(new moveRightIntake(0.2));
+            endeffectorController.povUp().whileTrue(new moveLeftIntake(0.2));
+            endeffectorController.povDown().whileTrue(new moveLeftIntake(-0.2));
+        
             //Intake Roller
+
+            //left
             manualController.x().whileTrue(new moveLeftRoller(0.7));
+            manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
+            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.5));
+            //right
             manualController.b().whileTrue(new moveRightRoller(-0.7));
+            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
+            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.5));
+
             //Set Intake
             manualController.a().onTrue(setIntakeLeft.intake());
             manualController.b().onTrue(setIntakeLeft.up());
+            //endeffectorController.pov(180).onTrue(setIntakeLeft.intake());
+            //endeffectorController.pov(0).onTrue(setIntakeLeft.up());
 
             manualController.x().onTrue(setIntakeRight.intake());
             manualController.y().onTrue(setIntakeRight.up());
+         //endeffectorController.a().onTrue(setIntakeRight.intake());
+            //endeffectorController.y().onTrue(setIntakeRight.up());
 
-            //Intake Roller
-            manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
-            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
+            
 
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-1)); //moves the correct way
+            endeffectorController.rightTrigger(TRIGGER_THRESHOLD).whileTrue(new moveFeeder(-1));
 
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
             manualController.pov(270).whileTrue(new MoveTurret(Turret.MANUAL_SPEED));
-            endeffectorController.a().whileTrue(new SetTurret(45));
+            //endeffectorController.a().whileTrue(new SetTurret(45));
+            new Trigger(() -> endeffectorController.getRightX() > DEAD_BAND).whileTrue(new MoveTurret(endeffectorController.getRightX() * Turret.MANUAL_SPEED));
+            new Trigger(() -> endeffectorController.getRightX() < -DEAD_BAND).whileTrue(new MoveTurret(endeffectorController.getRightX() * Turret.MANUAL_SPEED));
 
             //Shooter
             manualController.y().whileTrue(new PercentShoot(0.25));
-            // manualController.a().whileTrue(new moveHood(0.5));
+
+            endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(3000));
+            // LookUpTable.getNeededHoodAngle(3);
+            // endeffectorController.x().whileTrue(new SetSuperShooter(
+            //     () -> LookUpTable.getNeededShooterRPM(3), 
+            //     () -> 0, 
+            //     () -> LookUpTable.getNeededHoodAngle(3)
+            // ));
 
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));
             manualController.rightBumper().whileTrue(new Climb(-0.5));
             
-
-            
             //set Hood
             // manualController.leftStick().onTrue(new setHood(45)); //up
             // manualController.rightStick().onTrue(new setHood(80)); //down
-            manualController.start().whileTrue(new MoveEvanHood(-1)); //up
-            manualController.back().whileTrue(new MoveEvanHood(1)); //down
-            endeffectorController.start().onTrue(new SetEvanHood(60));
+          
+
+
 
             // Test PID to 90 degrees while held, returns to 0 when released
         

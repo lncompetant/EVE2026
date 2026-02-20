@@ -54,7 +54,7 @@ public final class PhysicalConstants {
 		public static final double DEG_PER_ROTATION = 360 / 18;
 		//The maximum inch displacement for every 0.02 sec cycle	
 		public static final double MAXIMUM_DEG_CHANGE = 5;
-		public static final double HOOD_DEG_OFFSET = 78;
+		public static final double HOOD_DEG_OFFSET = 96;
 
 		public static final double HOOD_START_HEIGHT = 80;
 
@@ -93,9 +93,8 @@ public final class PhysicalConstants {
     }
 
     public static final class Shooter {
-		public static final double MAX_SHOOTER_RPM = 7530;
-
 		public static final double SHOOTER_STATOR_CURRENT_LIMIT = 80;
 		public static final double SHOOTER_SUPPLY_CURRENT_LIMIT = 35;
+		public static final double MAX_SHOOTER_RPM = 7758;
     }
 }

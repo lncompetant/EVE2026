@@ -15,11 +15,8 @@ import com.revrobotics.servohub.config.ServoHubConfig;
 import com.revrobotics.encoder.*;
 import edu.wpi.first.math.controller.PIDController;
 
-import org.mort11.configs.LookUpTable;
-
 
 public class Hood extends SubsystemBase {
-    public static LookUpTable table;
     public static Hood hood;
     public ServoHub hoodServo;
     public ServoHub hoodServo2;

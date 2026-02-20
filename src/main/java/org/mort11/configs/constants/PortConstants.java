@@ -13,6 +13,7 @@ public final class PortConstants {
         public static final int OPERATOR_CONTROLLER = 3;
 
         public static final double DEAD_BAND = 0.05;
+        public static final double TRIGGER_THRESHOLD = 0.2;
   }
 
     public static final class CommandSwerveDrivetrain {
