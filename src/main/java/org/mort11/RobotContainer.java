@@ -146,22 +146,28 @@ public class RobotContainer {
             
             //Intake Roller
             manualController.x().whileTrue(new moveLeftRoller(0.7));
+            manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
+            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.5));
+
             manualController.b().whileTrue(new moveRightRoller(-0.7));
+            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
+            endeffectorController.rightBumper().whileTrue(new moveRightRoller(0.5));
+
             //Set Intake
             manualController.a().onTrue(setIntakeLeft.intake());
             manualController.b().onTrue(setIntakeLeft.up());
+            endeffectorController.pov(180).onTrue(setIntakeLeft.intake());
+            endeffectorController.pov(0).onTrue(setIntakeLeft.up());
 
             manualController.x().onTrue(setIntakeRight.intake());
             manualController.y().onTrue(setIntakeRight.up());
-
-            //Intake Roller
-            manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
-            manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
+            endeffectorController.a().onTrue(setIntakeRight.intake());
+            endeffectorController.y().onTrue(setIntakeRight.up());
 
             //Feeder
             manualController.pov(0).whileTrue(new moveFeeder(0.5));
             manualController.pov(180).whileTrue(new moveFeeder(-1)); //moves the correct way
-            endeffectorController.rightTrigger(0.2).whileTrue(new moveFeeder(-1));
+            endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new moveFeeder(-1));
 
             //Turret
             manualController.pov(90).whileTrue(new MoveTurret(-Turret.MANUAL_SPEED));
@@ -170,19 +176,17 @@ public class RobotContainer {
 
             //Shooter
             manualController.y().whileTrue(new PercentShoot(0.25));
-            endeffectorController.y().whileTrue(new SetShooter(1750));
+            endeffectorController.rightTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(1750));
             // LookUpTable.getNeededHoodAngle(3);
-            endeffectorController.x().whileTrue(new SetSuperShooter(
-                () -> LookUpTable.getNeededShooterRPM(3), 
-                () -> 0, 
-                () -> LookUpTable.getNeededHoodAngle(3)
-            ));
+            // endeffectorController.x().whileTrue(new SetSuperShooter(
+            //     () -> LookUpTable.getNeededShooterRPM(3), 
+            //     () -> 0, 
+            //     () -> LookUpTable.getNeededHoodAngle(3)
+            // ));
 
             //Climber
             manualController.leftBumper().whileTrue(new Climb(0.5));
             manualController.rightBumper().whileTrue(new Climb(-0.5));
-            
-
             
             //set Hood
             // manualController.leftStick().onTrue(new setHood(45)); //up
