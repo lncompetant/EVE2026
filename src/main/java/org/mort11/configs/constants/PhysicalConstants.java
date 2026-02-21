@@ -30,9 +30,9 @@ public final class PhysicalConstants {
 		public static final int IMU_TO_ROBOT_FRONT_ANGLE = 270;
 
 		public static final double WHEEL_COEFFICIENT_OF_FRICTION = 1;
-		public static final double ROBOT_MASS = 45;
-		// public static final double ROBOT_MOMENT_OF_INERTIA = ROBOT_MASS * 0.254 * 0.254 / 2;
-		public static final double ROBOT_MOMENT_OF_INERTIA = 1.25;
+		public static final double ROBOT_MASS = 47;
+		public static final double ROBOT_MOMENT_OF_INERTIA = ROBOT_MASS * Math.pow(Units.inchesToMeters(Math.hypot(26, 28)), 2) / 2;
+		// public static final double ROBOT_MOMENT_OF_INERTIA = 1.25;
 
 		public static final double DRIVE_MOTOR_CURRENT_LIMIT = 60;
 		public static final double DRIVE_MOTOR_MAX_RPM = 6000;
@@ -54,7 +54,7 @@ public final class PhysicalConstants {
 		public static final double DEG_PER_ROTATION = 360 / 18;
 		//The maximum inch displacement for every 0.02 sec cycle	
 		public static final double MAXIMUM_DEG_CHANGE = 5;
-		public static final double HOOD_DEG_OFFSET = 78;
+		public static final double HOOD_DEG_OFFSET = 96;
 
 		public static final double HOOD_START_HEIGHT = 80;
 
@@ -93,6 +93,8 @@ public final class PhysicalConstants {
     }
 
     public static final class Shooter {
-		public static final double MAX_SHOOTER_RPM = 7530;
+		public static final double SHOOTER_STATOR_CURRENT_LIMIT = 80;
+		public static final double SHOOTER_SUPPLY_CURRENT_LIMIT = 35;
+		public static final double MAX_SHOOTER_RPM = 7758;
     }
 }

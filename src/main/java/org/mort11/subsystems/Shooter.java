@@ -2,7 +2,8 @@ package org.mort11.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static org.mort11.configs.constants.PhysicalConstants.ROBOT_VOLTAGE;
@@ -12,12 +13,9 @@ import static org.mort11.configs.constants.PortConstants.Shooter.*;
 import static org.mort11.configs.constants.PIDConstants.Shooter.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.controls.Follower;
-
-import edu.wpi.first.math.controller.ProfiledPIDController;
 
 public class Shooter extends SubsystemBase {
     private static Shooter shooter;
@@ -26,6 +24,9 @@ public class Shooter extends SubsystemBase {
     private final TalonFX shooterFollowerB;
 
     private SimpleMotorFeedforward feedforward;
+    private SlewRateLimiter slewLimiter;
+    
+    private MedianFilter RPMAverager; 
 
     // private final VelocityVoltage velocityRequest =
     //     new VelocityVoltage(0).withSlot(0);
@@ -47,20 +48,24 @@ public class Shooter extends SubsystemBase {
         shooterFollowerA.getConfigurator().apply(config);
         shooterFollowerB.getConfigurator().apply(config);
 
-        // shooter
-
         shooterFollowerA.setControl(new Follower(SHOOTER_LEADER, MotorAlignmentValue.Opposed));
         shooterFollowerB.setControl(new Follower(SHOOTER_LEADER, MotorAlignmentValue.Opposed));
 
         feedforward = new SimpleMotorFeedforward(RPM_KS, RPM_KV, RPM_KA);
+        slewLimiter = new SlewRateLimiter(SLEW_RATE_LIMIT);
+
+        RPMAverager = new MedianFilter(35);
     }
 
     @Override
     public void periodic() {
-        shooterLeader.setVoltage(shooterSpeed * ROBOT_VOLTAGE);
-        // shooterLeader.setVoltage(shooterSpeed * ROBOT_VOLTAGE + feedforward.calculate(getShooterRPM()));
+        shooterLeader.setVoltage(slewLimitedSpeed(shooterSpeed) * ROBOT_VOLTAGE);
 
-        SmartDashboard.putNumber("Shooter Speed RPM", getShooterRPM());
+        SmartDashboard.putNumber("Shooter Speed RPM", RPMAverager.calculate(getShooterRPM()));
+    }
+
+    public double slewLimitedSpeed(double shooterSpeed) {
+        return slewLimiter.calculate(shooterSpeed);
     }
 
     // public void setShooterSpeed(double speed) {
@@ -72,16 +77,11 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterPercent(double percent) {
         shooterSpeed = percent;
-        // shooterLeader.set(percent);
-        // shooterFollowerA.set(percent);
-        // shooterFollowerB.set(percent);
     }
 
     public void setShooterRPM(double RPM) {
-        shooterSpeed = (RPM / MAX_SHOOTER_RPM) + (feedforward.calculate(RPM) / ROBOT_VOLTAGE);
-        // shooterLeader.set(percent);
-        // shooterFollowerA.set(percent);
-        // shooterFollowerB.set(percent);
+        shooterSpeed = (RPM / MAX_SHOOTER_RPM) + 
+        (feedforward.calculate(RPM) / ROBOT_VOLTAGE);
     }
 
     public double getShooterSpeedRPS() {
@@ -89,8 +89,9 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getShooterRPM() {
-        return -getShooterSpeedRPS() * 60.0;
+        return getShooterSpeedRPS() * 60.0;
     }
+
 
 
     public static Shooter getInstance(){
