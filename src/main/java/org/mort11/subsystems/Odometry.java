@@ -2,21 +2,20 @@ package org.mort11.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import org.mort11.subsystems.LimelightHelpers; // make sure this exists
 
 public class Odometry extends SubsystemBase {
 
     private final CommandSwerveDrivetrain drivetrain;
     private final Field2d field;
 
-    // Example target (speaker, hub, etc.)
-    private final Translation2d target = new Translation2d(16.5, 5.5); // change for your field
-
+    // change to hub pose i
+    private final Translation2d target = new Translation2d(16.5, 5.5);
     public Odometry(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.field = new Field2d();
@@ -26,45 +25,65 @@ public class Odometry extends SubsystemBase {
 
     @Override
     public void periodic() {
+        Vision.updateRobotOrientation(drivetrain);
+
+        // Add vision data from ALL cameras
+        addVisionMeasurements();
+
+        // Get fused pose (AFTER vision updates)
         Pose2d robotPose = drivetrain.getState().Pose;
 
-        addVisionMeasurement();
-
+        // Dashboard output
         SmartDashboard.putNumber("Robot X", robotPose.getX());
         SmartDashboard.putNumber("Robot Y", robotPose.getY());
+        SmartDashboard.putNumber("Robot Heading",
+            robotPose.getRotation().getDegrees());
 
         field.setRobotPose(robotPose);
 
-        double distance = getDistanceToTarget();
-        SmartDashboard.putNumber("Distance To Target", distance);
+        // Distance to target
+        SmartDashboard.putNumber(
+            "Distance To Target",
+            getDistanceToTarget()
+        );
     }
 
-    private void addVisionMeasurement() {
-        // Get MegaTag2 estimate (BEST option)
-        LimelightHelpers.PoseEstimate estimate =
-            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+    private void addVisionMeasurements() {
+        for (String name : Vision.getLimelights()) {
 
-        if (estimate == null) return;
+            Vision.VisionMeasurement vm = Vision.getMeasurement(name);
 
-        // Must have at least 1 tag
-        if (estimate.tagCount == 0) return;
+            if (vm == null) continue;
 
-        // Reject bad ambiguity (optional but recommended)
-        if (estimate.avgTagDist > 6.0) return; // too far away = unreliable
+            // Must see at least 1 tag
+            if (vm.tagCount == 0) continue;
 
-        // Get pose and timestamp directly
-        Pose2d visionPose = estimate.pose;
-        double timestamp = estimate.timestampSeconds;
+            // Reject bad measurements
+            if (vm.avgTagDist > 6.0) continue;
 
-        // Add measurement to drivetrain
-        drivetrain.addVisionMeasurement(visionPose, timestamp);
+            Matrix<N3, N1> stdDevs =
+                edu.wpi.first.math.VecBuilder.fill(
+                    0.5 + vm.avgTagDist * 0.2,  // X
+                    0.5 + vm.avgTagDist * 0.2,  // Y
+                    999999                     // ignore rotation
+                );
 
-        // Debug
-        SmartDashboard.putNumber("Vision X", visionPose.getX());
-        SmartDashboard.putNumber("Vision Y", visionPose.getY());
-        SmartDashboard.putNumber("Vision Tag Count", estimate.tagCount);
+            drivetrain.addVisionMeasurement(
+                vm.pose,
+                vm.timestamp,
+                stdDevs
+            );
+
+            // Debug per camera
+            SmartDashboard.putBoolean(name + " Has Tag", vm.tagCount > 0);
+            SmartDashboard.putNumber(name + " X", vm.pose.getX());
+            SmartDashboard.putNumber(name + " Y", vm.pose.getY());
+            SmartDashboard.putNumber(name + " Dist", vm.avgTagDist);
+            SmartDashboard.putNumber(name + " Tags", vm.tagCount);
+        }
     }
 
+    // Distance calculation 
     public double getDistanceToTarget() {
         Pose2d pose = drivetrain.getState().Pose;
         return pose.getTranslation().getDistance(target);

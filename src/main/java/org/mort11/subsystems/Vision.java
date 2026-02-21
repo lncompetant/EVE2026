@@ -4,9 +4,7 @@ import static org.mort11.configs.constants.VisionConstants.FRONT_CAMERA_NAME;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
-import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,13 +21,22 @@ public class Vision extends SubsystemBase {
     private static HttpCamera cameraFeed;
     private AprilTagFieldLayout fieldLayout;
     private NetworkTable cameraTable;
-    private NetworkTable llTable;
 
-//SIX SEVEN
+    // Need to change names to what they are on limelight.local
+    private static final String[] LIMELIGHTS = {
+        "limelight-uno",
+        "limelight-dos",
+        "limelight-tres",
+        "limelight-quatro"
+    };
+
+    public static String[] getLimelights() {
+        return LIMELIGHTS;
+    }
+
     public Vision() {
         fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-        cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);      
-        llTable = NetworkTableInstance.getDefault().getTable("limelight");
+        cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);
     }
 
     @Override
@@ -37,12 +44,10 @@ public class Vision extends SubsystemBase {
         SmartDashboard.putNumber("Tag ID", getTagId());
         SmartDashboard.putNumber("X Degrees", getTX());
         SmartDashboard.putBoolean("Tag Detected?", hasTag());
-        SmartDashboard.putNumber("CamTran X", getCamTranX());
-        SmartDashboard.putNumber("CamTran Y", getCamTranY());
-        SmartDashboard.putNumber("CamTran Z", getCamTranZ());
     }
 
     // ---------- Camera / Limelight Methods ----------
+
     public boolean hasTag() {
         return cameraTable.getEntry("tv").getDouble(0) == 1;
     }
@@ -113,55 +118,57 @@ public class Vision extends SubsystemBase {
         double[] orientation = {yaw, yawRate, 0, 0, 0, 0};
         cameraTable.getEntry("robot_orientation_set").setDoubleArray(orientation);
     }
-    public double[] getPicturePosition() {    
+
+    public double[] getPicturePosition() {
         return new double[]{0.0, 0.0, 0.0};
     }
-    
-    public double getCamTranX() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
 
-		return (double) getCamTran()[0];
-	}
+    // ---------------- MEGATAG2 SUPPORT ----------------
 
-	public double getCamTranY() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
-		return (double) getCamTran()[1];
-	}
+    public static class VisionMeasurement {
+        public Pose2d pose;
+        public double timestamp;
+        public int tagCount;
+        public double avgTagDist;
+    }
 
-	public double getCamTranZ() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
-		return (double) getCamTran()[2];
-	}
+    public static VisionMeasurement getMeasurement(String limelightName) {
+        var estimate =
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
 
-	public double getCamTranPitch() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
-		return (double) getCamTran()[3];
-	}
+        if (estimate == null) return null;
 
-	public double getCamTranYaw() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
-		return (double) getCamTran()[4];
-	}
+        VisionMeasurement vm = new VisionMeasurement();
+        vm.pose = estimate.pose;
+        vm.timestamp = estimate.timestampSeconds;
+        vm.tagCount = estimate.tagCount;
+        vm.avgTagDist = estimate.avgTagDist;
 
-    public double getCamTranRoll() {
-		if (getCamTran().length < 1) {
-			return 0;
-		}
-		return (double) getCamTran()[5];
-	}
+        return vm;
+    }
 
-    public Number[] getCamTran() {
-        return llTable.getEntry("targetpose_robotspace").getNumberArray(new Number[0]);
+
+    public static void updateRobotOrientation(
+        CommandSwerveDrivetrain drivetrain
+    ) {
+        double yaw = drivetrain.getPose().getRotation().getDegrees();
+
+        double yawRate =
+            Math.toDegrees(
+                drivetrain.getRobotRelativeSpeeds().omegaRadiansPerSecond
+            );
+
+        for (String name : LIMELIGHTS) {
+            LimelightHelpers.SetRobotOrientation(
+                name,
+                yaw,
+                yawRate,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            );
+        }
     }
 
     public static Vision getInstance() {
