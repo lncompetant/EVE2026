@@ -121,6 +121,7 @@ public class RobotContainer {
                 point.withModuleDirection(new Rotation2d(-driveController.getLeftY(), -driveController.getLeftX()))
             ));
 
+
             // uehheh ehfeuguuegeufuhehehfuef
             // Run SysId routines when holding back/start and X/Y.
             // Note that each routine should be run exactly once in a single log.
@@ -229,8 +230,8 @@ public class RobotContainer {
                 DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 return Commands.none();
             }
-  
         }
+
         public Command getAutonomousCommand() {
             // Simple drive forward auton
             return autoChooser.getSelected();
