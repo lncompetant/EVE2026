@@ -1,6 +1,8 @@
 package org.mort11.subsystems;
 
-import static org.mort11.configs.constants.VisionConstants.FRONT_CAMERA_NAME;
+// import static org.mort11.configs.constants.VisionConstants.FRONT_CAMERA_NAME;
+import static org.mort11.configs.constants.VisionConstants.*;
+// import org.mort11.configs.constants.VisionConstants;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -10,8 +12,8 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTable;            // KEEP
+import edu.wpi.first.networktables.NetworkTableInstance;    // May not be needed b/c LimelightHelpers.getLimelightNTTable() handles it internally.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -23,11 +25,13 @@ public class Vision extends SubsystemBase {
     private NetworkTable cameraTable;
 
     // Need to change names to what they are on limelight.local
+    // TODO: Rename the cameras to be more memorable 
+    //       (e.g., limelight4-FrontLeft, limelight4-FrontRight, limelight4-BackLeft, limelight4-BackRight)
     private static final String[] LIMELIGHTS = {
-        "limelight-uno",
-        "limelight-dos",
-        "limelight-tres",
-        "limelight-quatro"
+        LIMELIGHT_FRONT_LEFT,
+        LIMELIGHT_FRONT_RIGHT,
+        LIMELIGHT_BACK_LEFT,
+        LIMELIGHT_BACK_RIGHT
     };
 
     public static String[] getLimelights() {
@@ -36,8 +40,32 @@ public class Vision extends SubsystemBase {
 
     public Vision() {
         fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-        cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);
-    }
+        // cameraTable = NetworkTableInstance.getDefault().getTable(FRONT_CAMERA_NAME);
+        cameraTable = LimelightHelpers.getLimelightNTTable(LIMELIGHT_FRONT_LEFT);
+
+        // TODO: Replace these with your measured offsets (forward, side, up in meters; roll, pitch, yaw in degrees)
+        /* The robot pose origin in WPILib is the **center of the robot on the floor**. 
+            So all camera offsets in `setCameraPose_RobotSpace` are measured from that center point. Here's the parameter order:     
+                forward  = how far in front of robot center (+ = toward robot front)
+                side     = how far to the side (+ = left, - = right)
+                up       = height above the floor
+                roll     = camera roll (almost always 0)
+                pitch    = tilt up/down (- = tilted up, so -30 means camera points upward 30°)
+                yaw      = which direction camera faces (0=forward, 90=left, 180=back, -90=right)         
+        */ 
+        LimelightHelpers.setCameraPose_RobotSpace(LIMELIGHT_FRONT_LEFT,
+            CAM_FRONT_LEFT[0], CAM_FRONT_LEFT[1], CAM_FRONT_LEFT[2],
+            CAM_FRONT_LEFT[3], CAM_FRONT_LEFT[4], CAM_FRONT_LEFT[5]);
+        LimelightHelpers.setCameraPose_RobotSpace(LIMELIGHT_FRONT_RIGHT,
+            CAM_FRONT_RIGHT[0], CAM_FRONT_RIGHT[1], CAM_FRONT_RIGHT[2],
+            CAM_FRONT_RIGHT[3], CAM_FRONT_RIGHT[4], CAM_FRONT_RIGHT[5]);
+        LimelightHelpers.setCameraPose_RobotSpace(LIMELIGHT_BACK_LEFT,
+            CAM_BACK_LEFT[0], CAM_BACK_LEFT[1], CAM_BACK_LEFT[2],
+            CAM_BACK_LEFT[3], CAM_BACK_LEFT[4], CAM_BACK_LEFT[5]);
+        LimelightHelpers.setCameraPose_RobotSpace(LIMELIGHT_BACK_RIGHT,
+            CAM_BACK_RIGHT[0], CAM_BACK_RIGHT[1], CAM_BACK_RIGHT[2],
+            CAM_BACK_RIGHT[3], CAM_BACK_RIGHT[4], CAM_BACK_RIGHT[5]);
+        }
 
     @Override
     public void periodic() {

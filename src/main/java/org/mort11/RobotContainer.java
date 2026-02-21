@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,6 +48,7 @@ import org.mort11.configs.constants.TunerConstants;
 import org.mort11.subsystems.CommandSwerveDrivetrain;
 import org.mort11.subsystems.EvanHood;
 import org.mort11.subsystems.Vision;
+import org.mort11.subsystems.OdometrySub;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 
@@ -86,13 +88,15 @@ public class RobotContainer {
 
    
     private final Vision vision = Vision.getInstance();
-    
+    // private final OdometrySub odometry = new OdometrySub(drivetrain);
+    private final OdometrySub odometry = OdometrySub.getInstance(drivetrain);
     
     public static SendableChooser<Command> autoChooser;
 
     public AutoBuilder autoBuilder;
         public RobotContainer() {
             drivetrain.configureAutoBuilder();
+            // OdometrySub.setInstance(odometry);
             configureBindings();
             configureAuto();
         }
@@ -189,7 +193,15 @@ public class RobotContainer {
             //Shooter
             manualController.y().whileTrue(new PercentShoot(0.25));
 
-            endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(2500));
+            // endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(2500));
+            endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(() -> odometry.getTargetShooterRPM()));
+            // endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetSuperShooter(
+            //     () -> odometry.getTargetShooterRPM(),
+            //     () -> 0,  // turret — add later
+            //     () -> odometry.getTargetHoodAngle()
+            // ));
+
+            
             endeffectorController.x().whileTrue(new SetShooter(6500));
             // LookUpTable.getNeededHoodAngle(3);
             // endeffectorController.x().whileTrue(new SetSuperShooter(

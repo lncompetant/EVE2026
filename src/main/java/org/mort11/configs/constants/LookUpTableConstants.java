@@ -19,4 +19,7 @@ public final class LookUpTableConstants {
         {0, 0},
         {10, 10}
     };
+
+    // Fallback shooter RPM when no AprilTags are visible
+    public static final double FALLBACK_SHOOTER_RPM = 2500;
 }
