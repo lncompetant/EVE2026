@@ -46,6 +46,8 @@ public final class PhysicalConstants {
 		// public static final double ODOMETRY_MULTIPLIER = 5.575;
     }
 	public static final class Feeder {
+		public static final int FEEDER_SMART_CURRENT_LIMIT = 35;
+		public static final int FEEDER_SECONDARY_CURRENT_LIMIT = 100;
 
     }
 
@@ -73,11 +75,14 @@ public final class PhysicalConstants {
     }
 
     public static final class IntakeRollerLeft {
+		public static final int ROLLER_LEFT_SMART_CURRENT_LIMIT = 40;
+    	public static final double ROLLER_LEFT_SECONDARY_CURRENT_LIMIT = 60;
 
     }
 
     public static final class IntakeRollerRight {
-
+		public static final int ROLLER_RIGHT_SMART_CURRENT_LIMIT = 40;
+    	public static final double ROLLER_RIGHT_SECONDARY_CURRENT_LIMIT = 60;
     }
 
 	public static final class Turret {

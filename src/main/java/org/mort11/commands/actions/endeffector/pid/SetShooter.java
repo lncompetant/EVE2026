@@ -32,6 +32,7 @@ public class SetShooter extends Command {
     @Override
     public void execute() {
         shooter.setShooterRPM(RPM.getAsDouble());
+        
     }
 
     @Override

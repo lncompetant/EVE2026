@@ -19,6 +19,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static org.mort11.configs.constants.PhysicalConstants.IntakeRollerRight.*;
 
 public class IntakeRollerRight extends SubsystemBase {
     private static IntakeRollerRight intake;
@@ -29,6 +30,7 @@ public class IntakeRollerRight extends SubsystemBase {
     public IntakeRollerRight() {
         rollerMotor = new SparkMax(PortConstants.IntakeRollerRight.sparkRollRight, MotorType.kBrushless);
         rollerConfig = new SparkMaxConfig();
+        rollerConfig.smartCurrentLimit(ROLLER_RIGHT_SMART_CURRENT_LIMIT).secondaryCurrentLimit(ROLLER_RIGHT_SECONDARY_CURRENT_LIMIT);
 
         rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }

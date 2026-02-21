@@ -7,7 +7,7 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
+import static org.mort11.configs.constants.PhysicalConstants.Feeder.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,14 +20,17 @@ public class Feeder extends SubsystemBase {
     public Feeder() {
         feedMotor = new SparkMax(sparkFeeder, MotorType.kBrushless);
         feedConfig = new SparkMaxConfig();
+        feedConfig.smartCurrentLimit(FEEDER_SMART_CURRENT_LIMIT)
+          .secondaryCurrentLimit(FEEDER_SECONDARY_CURRENT_LIMIT);
 
-        feedMotor.configure(feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+feedMotor.configure(feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Feeder Pos Motor Rotations", getMotorRotationPosition());
         SmartDashboard.putNumber("Feeder Motor Speed RPM", getMotorRotationRPM());
+        SmartDashboard.putNumber("Feeder Motor Current", feedMotor.getOutputCurrent());
     }
 
     public void setSpeed(double speed){
