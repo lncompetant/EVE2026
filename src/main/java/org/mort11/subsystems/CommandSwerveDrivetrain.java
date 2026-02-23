@@ -481,4 +481,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Rotation2d getRotation2d() {
         return getPose().getRotation();
     }
+	public ChassisSpeeds getFieldRelativeSpeeds() {
+   		return ChassisSpeeds.fromRobotRelativeSpeeds(getState().Speeds, getRotation2d());
+}
 }
