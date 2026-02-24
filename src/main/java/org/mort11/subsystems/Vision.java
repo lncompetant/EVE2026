@@ -136,7 +136,8 @@ public class Vision extends SubsystemBase {
         var estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
 
-        if (estimate == null) return null;
+        if (estimate == null) 
+            return null;
 
         VisionMeasurement vm = new VisionMeasurement();
         vm.pose = estimate.pose;
