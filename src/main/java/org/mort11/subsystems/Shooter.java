@@ -62,6 +62,7 @@ public class Shooter extends SubsystemBase {
         shooterLeader.setVoltage(slewLimitedSpeed(shooterSpeed) * ROBOT_VOLTAGE);
 
         SmartDashboard.putNumber("Shooter Speed RPM", RPMAverager.calculate(getShooterRPM()));
+        
     }
 
     public double slewLimitedSpeed(double shooterSpeed) {

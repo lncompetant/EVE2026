@@ -155,11 +155,11 @@ public class RobotContainer {
             //left
             manualController.x().whileTrue(new moveLeftRoller(0.7));
             manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
-            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.5));
+            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.75));
             //right
             manualController.b().whileTrue(new moveRightRoller(-0.7));
             manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
-            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.5));
+            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.75));
 
             //Set Intake
             manualController.a().onTrue(setIntakeLeft.intake());
