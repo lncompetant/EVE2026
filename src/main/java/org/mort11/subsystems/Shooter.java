@@ -93,8 +93,6 @@ public class Shooter extends SubsystemBase {
         return getShooterSpeedRPS() * 60.0;
     }
 
-
-
     public static Shooter getInstance(){
         if (shooter == null){
             shooter = new Shooter();

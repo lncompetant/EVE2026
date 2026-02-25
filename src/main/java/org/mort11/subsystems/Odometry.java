@@ -30,9 +30,11 @@ public class Odometry extends SubsystemBase {
 
         SmartDashboard.putData("Field", field);
     }
-
+    
     @Override
     public void periodic() {
+        setFieldObj();
+
         Vision.updateRobotOrientation(drivetrain);
 
         // Add vision data from ALL cameras
@@ -125,6 +127,15 @@ public class Odometry extends SubsystemBase {
             return pose.getTranslation().getDistance(Redhub);
         }
     }
+    
+    // Add hub markers to the Field2d
+    public void setFieldObj(){
+        edu.wpi.first.wpilibj.smartdashboard.FieldObject2d redHub =
+            field.getObject("Red Hub");
+        redHub.setPose(new Pose2d(RED_HUB_X, RED_HUB_Y, new Rotation2d()));
 
-
+        edu.wpi.first.wpilibj.smartdashboard.FieldObject2d blueHub =
+            field.getObject("Blue Hub");
+        blueHub.setPose(new Pose2d(BLUE_HUB_X, BLUE_HUB_Y, new Rotation2d()));
+    }
 }
