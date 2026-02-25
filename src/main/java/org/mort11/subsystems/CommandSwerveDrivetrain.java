@@ -70,7 +70,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private boolean m_hasAppliedOperatorPerspective = false;
 
     //local max speed theoretical needs to be tuend
-    private double MAX_SPEED = 11.71/2; //from tuner constants linearvelocity in Meters per second PUT THIS IN CONSTANTS LATER
+     //from tuner constants linearvelocity in Meters per second PUT THIS IN CONSTANTS LATER
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();

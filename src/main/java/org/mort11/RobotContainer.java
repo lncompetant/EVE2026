@@ -49,12 +49,7 @@ import org.mort11.subsystems.EvanHood;
 import org.mort11.subsystems.Vision;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-
 import static edu.wpi.first.units.Units.*;
-
-
-
-
 
 import static org.mort11.configs.constants.PortConstants.Controller.*;
 import static org.mort11.configs.constants.PhysicalConstants.*;
