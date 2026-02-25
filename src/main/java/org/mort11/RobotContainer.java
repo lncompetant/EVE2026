@@ -62,6 +62,8 @@ import static org.mort11.configs.constants.PhysicalConstants.*;
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(1.25).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double currentSpeed = MaxSpeed;
+    private double currentAngularRate = MaxAngularRate;
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -103,9 +105,9 @@ public class RobotContainer {
             drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() ->
-                    drive.withVelocityX(-driveController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                        .withVelocityY(-driveController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(-driveController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    drive.withVelocityX(-driveController.getLeftY() * currentSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(-driveController.getLeftX() * currentSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(-driveController.getRightX() * currentAngularRate) // Drive counterclockwise with negative X (left)
                 )
             );
     
@@ -120,6 +122,15 @@ public class RobotContainer {
             driveController.circle().whileTrue(drivetrain.applyRequest(() ->
                 point.withModuleDirection(new Rotation2d(-driveController.getLeftY(), -driveController.getLeftX()))
             ));
+            driveController.R2().whileTrue(Commands.runOnce(() -> {
+                currentSpeed = 0.3 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+                currentAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond);
+            }));
+
+            driveController.triangle().onTrue(Commands.runOnce(() -> {
+                currentSpeed = MaxSpeed;
+                currentAngularRate = MaxAngularRate;
+            }));
 
 
             // uehheh ehfeuguuegeufuhehehfuef
@@ -136,6 +147,8 @@ public class RobotContainer {
             drivetrain.registerTelemetry(logger::telemeterize);
             
             driveController.square().whileTrue(new Angle2AprilTag(0));
+
+
 
             //Subsystem commands for the endeffector, binded to the operator controller
             //Intake Arms
@@ -155,11 +168,11 @@ public class RobotContainer {
             //left
             manualController.x().whileTrue(new moveLeftRoller(0.7));
             manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
-            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.75));
+            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.85));
             //right
             manualController.b().whileTrue(new moveRightRoller(-0.7));
             manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
-            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.75));
+            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.85));
 
             //Set Intake
             manualController.a().onTrue(setIntakeLeft.intake());
@@ -171,6 +184,7 @@ public class RobotContainer {
             manualController.y().onTrue(setIntakeRight.up());
          //endeffectorController.a().onTrue(setIntakeRight.intake());
             //endeffectorController.y().onTrue(setIntakeRight.up());
+            
 
             
 
@@ -190,7 +204,7 @@ public class RobotContainer {
             manualController.y().whileTrue(new PercentShoot(0.25));
 
             endeffectorController.leftTrigger(TRIGGER_THRESHOLD).whileTrue(new SetShooter(2500));
-            endeffectorController.x().whileTrue(new SetShooter(6500));
+            endeffectorController.x().whileTrue(new SetShooter(3000));
             // LookUpTable.getNeededHoodAngle(3);
             // endeffectorController.x().whileTrue(new SetSuperShooter(
             //     () -> LookUpTable.getNeededShooterRPM(3), 

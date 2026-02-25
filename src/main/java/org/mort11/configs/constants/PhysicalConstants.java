@@ -46,9 +46,8 @@ public final class PhysicalConstants {
 		// public static final double ODOMETRY_MULTIPLIER = 5.575;
     }
 	public static final class Feeder {
-		public static final int FEEDER_SMART_CURRENT_LIMIT = 35;
+		public static final int FEEDER_SMART_CURRENT_LIMIT = 50;
 		public static final int FEEDER_SECONDARY_CURRENT_LIMIT = 100;
-
     }
 
 	public static final class Hood {
