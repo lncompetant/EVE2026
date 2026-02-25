@@ -105,7 +105,7 @@ public class Odometry extends SubsystemBase {
 		return DriverStation.getAlliance().isPresent() ? DriverStation.getAlliance().get() == Alliance.Blue : true;
 	}
 
-    Pose2d getHubTarget() {
+    public Pose2d getHubTarget() {
         if (isBlue()) {
             return new Pose2d(BLUE_HUB_X, BLUE_HUB_Y, new Rotation2d());
         } else {
@@ -115,7 +115,6 @@ public class Odometry extends SubsystemBase {
 
     // Make values for target pass
     // Pose2d getPassTarget(){
-
     // }
 
     public double getDistanceToHub() {
