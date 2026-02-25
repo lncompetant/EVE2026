@@ -1,10 +1,13 @@
 package org.mort11.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -97,4 +100,32 @@ public class Odometry extends SubsystemBase {
     public Pose2d getPose() {
         return drivetrain.getState().Pose;
     }
+
+    public static Boolean isBlue() {
+		return DriverStation.getAlliance().isPresent() ? DriverStation.getAlliance().get() == Alliance.Blue : true;
+	}
+
+    Pose2d getHubTarget() {
+        if (isBlue()) {
+            return new Pose2d(BLUE_HUB_X, BLUE_HUB_Y, new Rotation2d());
+        } else {
+            return new Pose2d(RED_HUB_X, RED_HUB_Y, new Rotation2d());
+        }
+    }
+
+    // Make values for target pass
+    // Pose2d getPassTarget(){
+
+    // }
+
+    public double getDistanceToHub() {
+        Pose2d pose = drivetrain.getState().Pose;
+        if (isBlue()) {
+            return pose.getTranslation().getDistance(Bluehub);
+        } else {
+            return pose.getTranslation().getDistance(Redhub);
+        }
+    }
+
+
 }
