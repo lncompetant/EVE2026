@@ -14,6 +14,7 @@ public final class PortConstants {
 
         public static final double DEAD_BAND = 0.05;
         public static final double TRIGGER_THRESHOLD = 0.2;
+        public static final double RUMBLE_AMOUNT = 0.5; //betweem 0 and 1
   }
 
     public static final class CommandSwerveDrivetrain {

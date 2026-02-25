@@ -61,7 +61,7 @@ import static org.mort11.configs.constants.PhysicalConstants.*;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(1.25).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(1.25).in(RadiansPerSecond); // 1.25 of a rotation per second max angular velocity
     private double currentSpeed = MaxSpeed;
     private double currentAngularRate = MaxAngularRate;
 
@@ -74,10 +74,9 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandPS5Controller driveController = new CommandPS5Controller(DRIVE_CONTROLLER);
-    private final CommandXboxController endeffectorController = new CommandXboxController(ENDEFFECTOR_CONTROLLER);
-    private final CommandXboxController manualController = new CommandXboxController(MANUAL_CONTROLLER);
-    private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER);
+    private static final CommandPS5Controller driveController = new CommandPS5Controller(DRIVE_CONTROLLER);
+    private static final CommandXboxController endeffectorController = new CommandXboxController(ENDEFFECTOR_CONTROLLER);
+    private static final CommandXboxController manualController = new CommandXboxController(MANUAL_CONTROLLER);
 
     
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -307,8 +306,20 @@ public class RobotContainer {
     //         BasicCommands.setCommands();
     //         return new PathPlannerAuto(plan);
     // } incorrect thing
-        
-        public static CommandSwerveDrivetrain getSwerveDrivetrain() {
-            return drivetrain;
+    
+    public static CommandPS5Controller getDriverController() {
+        return driveController;
+    }
+    
+    public static CommandXboxController getEndeffectorController() {
+        return endeffectorController;
+    }
+
+    public static CommandXboxController getManualController() {
+        return manualController;
+    }
+
+    public static CommandSwerveDrivetrain getSwerveDrivetrain() {
+        return drivetrain;
     }
 }
