@@ -9,13 +9,18 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static org.mort11.configs.constants.PhysicalConstants.Field.*;
+
 public class Odometry extends SubsystemBase {
 
     private final CommandSwerveDrivetrain drivetrain;
     private final Field2d field;
 
     // change to hub pose i
-    private final Translation2d target = new Translation2d(16.5, 5.5);
+    private final Translation2d Redhub = new Translation2d(RED_HUB_X, RED_HUB_Y);
+    private final Translation2d Bluehub = new Translation2d(BLUE_HUB_X, BLUE_HUB_Y);
+
+
     public Odometry(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.field = new Field2d();
@@ -86,9 +91,9 @@ public class Odometry extends SubsystemBase {
     // Distance calculation 
     public double getDistanceToTarget() {
         Pose2d pose = drivetrain.getState().Pose;
-        return pose.getTranslation().getDistance(target);
+        return pose.getTranslation().getDistance(Redhub);
     }
-
+    
     public Pose2d getPose() {
         return drivetrain.getState().Pose;
     }

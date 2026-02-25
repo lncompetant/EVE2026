@@ -101,4 +101,19 @@ public final class PhysicalConstants {
 		public static final double SHOOTER_SUPPLY_CURRENT_LIMIT = 35;
 		public static final double MAX_SHOOTER_RPM = 7758;
     }
+
+	public static final class Field {
+		public static final double BLUE_HUB_X = 4.625594;
+		public static final double BLUE_HUB_Y = 4.034536;
+
+		public static final double RED_HUB_X = 11.915394;
+		public static final double RED_HUB_Y = 4.034536;
+
+		public static final double RED_PASS_X = 0.0;
+		public static final double RED_PASS_Y = 0.0;
+
+		public static final double BLUE_PASS_X = 0.0;
+		public static final double BLUE_PASS_Y = 0.0;
+
+	}
 }
