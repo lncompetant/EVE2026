@@ -100,6 +100,8 @@ public final class PhysicalConstants {
 		public static final double SHOOTER_STATOR_CURRENT_LIMIT = 80;
 		public static final double SHOOTER_SUPPLY_CURRENT_LIMIT = 35;
 		public static final double MAX_SHOOTER_RPM = 7758;
+
+		public static final double SHOOTER_SPEED_BUZZ_TOLERANCE = 0.05; //in percent of wanted RPM
     }
 
 	public static final class Field {
