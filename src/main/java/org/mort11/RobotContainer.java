@@ -8,6 +8,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -49,6 +51,9 @@ import org.mort11.subsystems.EvanHood;
 import org.mort11.subsystems.Vision;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 
 import static edu.wpi.first.units.Units.*;
 
@@ -64,6 +69,7 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(1.25).in(RadiansPerSecond); // 1.25 of a rotation per second max angular velocity
     private double currentSpeed = MaxSpeed;
     private double currentAngularRate = MaxAngularRate;
+    private final Field2d m_field = new Field2d();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -94,6 +100,7 @@ public class RobotContainer {
     public AutoBuilder autoBuilder;
         public RobotContainer() {
             drivetrain.configureAutoBuilder();
+
             configureBindings();
             configureAuto();
         }
@@ -171,7 +178,7 @@ public class RobotContainer {
             //right
             manualController.b().whileTrue(new moveRightRoller(-0.7));
             manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
-            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-0.85));
+            endeffectorController.rightBumper().whileTrue(new moveRightRoller(-1));
 
             //Set Intake
             manualController.a().onTrue(setIntakeLeft.intake());
@@ -267,6 +274,7 @@ public class RobotContainer {
     
         public void configureAuto() {
         final var idle = new SwerveRequest.Idle();
+        
         autoChooser = new SendableChooser<Command>();
         autoChooser.setDefaultOption("nothing", null);
         autoChooser.addOption("Pathplanner Rotate", new PathPlannerAuto("RotationAuto"));
@@ -274,6 +282,8 @@ public class RobotContainer {
         autoChooser.addOption("Pathplanner ZigZag", new PathPlannerAuto("ZigZagAuto"));
         autoChooser.addOption("Timed Taxi", new Taxi());
         autoChooser.addOption("Limelight Test", new LimelightTest(drivetrain, vision, 0));
+        autoChooser.addOption("test", new PathPlannerAuto("shoot"));
+
         autoChooser.addOption("Drive forward nopathplan",Commands.sequence(
                 // Reset our field centric heading to match the robot
                 // facing away from our alliance station wall (0 deg).
@@ -287,11 +297,26 @@ public class RobotContainer {
                 .withTimeout(5.0),
                 // Finally idle for the rest of auton
                 drivetrain.applyRequest(() -> idle)));
+
         // Pathplanner autos WIP
         // autoChooser.addOption("LimelightTest", new PathPlannerAuto("Please Work")); 
     
                 // drivetrain.applyRequest(() -> idle)
             // );
+            SmartDashboard.putData("Auto Chooser", autoChooser);
+
+            SmartDashboard.putData("Field", m_field);
+
+            PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+                m_field.setRobotPose(pose);
+            });
+
+            PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+                m_field.getObject("target pose").setPose(pose);
+            });
+            PathPlannerLogging.setLogActivePathCallback((poses) -> {
+                m_field.getObject("path").setPoses(poses);
+            });
         }
     
     //     public void configureAuto() {
