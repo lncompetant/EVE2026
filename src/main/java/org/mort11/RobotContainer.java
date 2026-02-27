@@ -11,6 +11,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 // import com.pathplanner.lib.commands.PathPlannerAuto; commented out bc pathplanner errors
+// Add to your imports at the top
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -127,7 +130,7 @@ public class RobotContainer {
             ));
             driveController.R2().whileTrue(Commands.runOnce(() -> {
                 currentSpeed = 0.3 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
-                currentAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond);
+                currentAngularRate = RotationsPerSecond.of(0.8).in(RadiansPerSecond);
             }));
 
             driveController.triangle().onTrue(Commands.runOnce(() -> {
@@ -163,15 +166,15 @@ public class RobotContainer {
 
             endeffectorController.y().whileTrue(new moveRightIntake(-0.2));
             endeffectorController.a().whileTrue(new moveRightIntake(0.2));
-            endeffectorController.povUp().whileTrue(new moveLeftIntake(0.2));
-            endeffectorController.povDown().whileTrue(new moveLeftIntake(-0.2));
+            endeffectorController.povUp().whileTrue(new moveLeftIntake(0.5));
+            endeffectorController.povDown().whileTrue(new moveLeftIntake(-0.5));
         
             //Intake Roller
 
             //left
             manualController.x().whileTrue(new moveLeftRoller(0.7));
             manualController.leftBumper().onTrue(new moveLeftRoller(0.5));
-            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(0.85));
+            endeffectorController.leftBumper().whileTrue(new moveLeftRoller(1));
             //right
             manualController.b().whileTrue(new moveRightRoller(-0.7));
             manualController.rightBumper().whileTrue(new moveRightRoller(0.5));
