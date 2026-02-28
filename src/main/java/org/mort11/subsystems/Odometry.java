@@ -1,13 +1,19 @@
 package org.mort11.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+
+import static org.mort11.configs.constants.PhysicalConstants.Field.*;
 
 public class Odometry extends SubsystemBase {
 
@@ -15,16 +21,21 @@ public class Odometry extends SubsystemBase {
     private final Field2d field;
 
     // change to hub pose i
-    private final Translation2d target = new Translation2d(16.5, 5.5);
+    private final Translation2d Redhub = new Translation2d(RED_HUB_X, RED_HUB_Y);
+    private final Translation2d Bluehub = new Translation2d(BLUE_HUB_X, BLUE_HUB_Y);
+
+
     public Odometry(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.field = new Field2d();
 
         SmartDashboard.putData("Field", field);
     }
-
+    
     @Override
     public void periodic() {
+        setFieldObj();
+
         Vision.updateRobotOrientation(drivetrain);
 
         // Add vision data from ALL cameras
@@ -86,10 +97,44 @@ public class Odometry extends SubsystemBase {
     // Distance calculation 
     public double getDistanceToTarget() {
         Pose2d pose = drivetrain.getState().Pose;
-        return pose.getTranslation().getDistance(target);
+        return pose.getTranslation().getDistance(Redhub);
     }
-
+    
     public Pose2d getPose() {
         return drivetrain.getState().Pose;
+    }
+
+    public static Boolean isBlue() {
+		return DriverStation.getAlliance().isPresent() ? DriverStation.getAlliance().get() == Alliance.Blue : true;
+	}
+
+    public Pose2d getHubTarget() {
+        if (isBlue()) {
+            return new Pose2d(BLUE_HUB_X, BLUE_HUB_Y, new Rotation2d());
+        } else {
+            return new Pose2d(RED_HUB_X, RED_HUB_Y, new Rotation2d());
+        }
+    }
+
+    // Make values for target pass
+    // Pose2d getPassTarget(){
+    // }
+
+    public double getDistanceToHub() {
+        Pose2d pose = drivetrain.getState().Pose;
+        if (isBlue()) {
+            return pose.getTranslation().getDistance(Bluehub);
+        } else {
+            return pose.getTranslation().getDistance(Redhub);
+        }
+    }
+
+    // Add hub markers to the Field2d
+    public void setFieldObj(){
+        FieldObject2d redHub = field.getObject("Red Hub");
+        redHub.setPose(new Pose2d(RED_HUB_X, RED_HUB_Y, new Rotation2d()));
+
+        FieldObject2d blueHub = field.getObject("Blue Hub");
+        blueHub.setPose(new Pose2d(BLUE_HUB_X, BLUE_HUB_Y, new Rotation2d()));
     }
 }
