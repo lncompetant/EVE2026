@@ -25,6 +25,7 @@ public final class PhysicalConstants {
 		// public static final double BACK_LEFT_OFFSET = 223.3;
 		// public static final double BACK_RIGHT_OFFSET = 255.5;
 
+		
 		public static final double FRONT_LEFT_OFFSET = 21.3 + 90 + 180;
 		public static final double FRONT_RIGHT_OFFSET = 3.08 + 90 + 180;
 		public static final double BACK_LEFT_OFFSET = 311.75 + 90 + 180;
@@ -77,14 +78,14 @@ public final class PhysicalConstants {
     }
 
     public static final class IntakeRollerLeft {
-		public static final int ROLLER_LEFT_SMART_CURRENT_LIMIT = 40;
-    	public static final double ROLLER_LEFT_SECONDARY_CURRENT_LIMIT = 60;
+		public static final int ROLLER_LEFT_SMART_CURRENT_LIMIT = 60;
+    	public static final double ROLLER_LEFT_SECONDARY_CURRENT_LIMIT = 100;
 
     }
 
     public static final class IntakeRollerRight {
-		public static final int ROLLER_RIGHT_SMART_CURRENT_LIMIT = 40;
-    	public static final double ROLLER_RIGHT_SECONDARY_CURRENT_LIMIT = 60;
+		public static final int ROLLER_RIGHT_SMART_CURRENT_LIMIT = 60;
+    	public static final double ROLLER_RIGHT_SECONDARY_CURRENT_LIMIT = 100;
     }
 
 	public static final class Turret {
