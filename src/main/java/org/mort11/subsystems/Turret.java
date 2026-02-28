@@ -58,7 +58,17 @@ public class Turret extends SubsystemBase {
         motor.setVoltage(pidOutput + ffOutput);
     }
 
+    public double calculateAngleToTarget(Pose2D targetPose, Pose2D robotPose){
+        double deltaX = targetPose.getX() - robotPose.getX();
+        double deltaY = targetPose.getY() - robotPose.getY();
+        // Calculate the absolute field-relative angle
+        Rotation2d targetAngle = new Rotation2d(Math.atan2(deltaY, deltaX));
+        // Calculate the turret's required position relative to the robot heading
+        Rotation2d turretRelativeAngle = targetAngle.minus(robotPose.getRotation());
+        return targetAngle.getDegrees();
+    }
 
+    
     // public boolean goalReached(){
     //     return controller.atGoal();
     // }
